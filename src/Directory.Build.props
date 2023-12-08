@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+    
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Authors>Stephen (Sven) Vernyi</Authors>
+        <ContinuousIntegrationBuild Condition="'$(GITHUB_RUN_ID)' != ''">true</ContinuousIntegrationBuild>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <PackageValidationBaselineVersion>17.0.0</PackageValidationBaselineVersion>
+        <Product>QPdfSharp</Product>
+        <RootNamespace>QPdfSharp</RootNamespace>
+        <VersionPrefix>0.0.1</VersionPrefix>
+    </PropertyGroup>
+
+</Project>
