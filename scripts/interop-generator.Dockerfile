@@ -15,8 +15,6 @@ RUN mv libclangsharp/runtimes/linux-x64/native/libClangSharp.so ~/.dotnet/tools/
 
 RUN git clone https://github.com/qpdf/qpdf.git && cd qpdf/include
 
-RUN ls -la ~/.dotnet/tools
-
 CMD ~/.dotnet/tools/ClangSharpPInvokeGenerator \
     --additional -m64  \
     --libraryPath qpdf29 \
