@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfLogDestination : uint
+internal enum QPdfLogDestination : uint
 {
     qpdf_log_dest_default = 0,
     qpdf_log_dest_stdout = 1,

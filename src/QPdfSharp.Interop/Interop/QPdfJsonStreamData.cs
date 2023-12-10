@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfJsonStreamData : uint
+internal enum QPdfJsonStreamData : uint
 {
     qpdf_sj_none = 0,
     qpdf_sj_inline,

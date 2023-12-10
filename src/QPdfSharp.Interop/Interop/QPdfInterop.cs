@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
-public static unsafe partial class QPdfInterop
+internal static unsafe partial class QPdfInterop
 {
     [DllImport("qpdf29", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
     public static extern void qpdf_silence_errors([NativeTypeName("qpdf_data")] QPdfData* qpdf);

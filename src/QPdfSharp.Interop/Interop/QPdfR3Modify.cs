@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfR3Modify : uint
+internal enum QPdfR3Modify : uint
 {
     qpdf_r3m_all = 0,
     qpdf_r3m_annotate,

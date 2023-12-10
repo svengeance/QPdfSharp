@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfObjectType : uint
+internal enum QPdfObjectType : uint
 {
     ot_uninitialized,
     ot_reserved,

@@ -18,7 +18,7 @@ RUN git clone https://github.com/qpdf/qpdf.git && cd qpdf/include
 CMD ~/.dotnet/tools/ClangSharpPInvokeGenerator \
     --additional -m64  \
     --libraryPath qpdf29 \
-    --remap \ 
+    --remap \
         pdf_annotation_flag_e=PdfAnnotationFlag \
         pdf_form_field_flag_e=PdfFormFieldFlag \
         qpdf_encryption_status_e=QPdfEncryptionStatus \
@@ -39,11 +39,12 @@ CMD ~/.dotnet/tools/ClangSharpPInvokeGenerator \
         qpdf_log_dest_e=QPdfLogDestination \
         qpdf_log_fn_t=QPdfLogFunction \
         qpdf_write_fn_t=QPdfWriteFunction \
+    --with-access-specifier *=Internal \
     --config generate-file-scoped-namespaces generate-setslastsystemerror-attribute multi-file compatible-codegen generate-helper-types \
     --include-directory /QPdfSharp/qpdf/include /usr/lib/llvm-14/lib/clang/14.0.6/include \
     --file-directory /QPdfSharp/qpdf/include/qpdf \
     --file Constants.h qpdf-c.h qpdflogger-c.h qpdfjob-c.h \
     --methodClassName QPdfInterop \
-    --namespace QPdf.Interop \
+    --namespace QPdfSharp.Interop \
     --output /output \
     --prefixStrip clang_

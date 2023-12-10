@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfR3Print : uint
+internal enum QPdfR3Print : uint
 {
     qpdf_r3p_full = 0,
     qpdf_r3p_low,

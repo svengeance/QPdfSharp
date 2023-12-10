@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum PdfFormFieldFlag : uint
+internal enum PdfFormFieldFlag : uint
 {
     ff_all_read_only = 1 << 0,
     ff_all_required = 1 << 1,

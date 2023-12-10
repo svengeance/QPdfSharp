@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfErrorCode : uint
+internal enum QPdfErrorCode : uint
 {
     qpdf_e_success = 0,
     qpdf_e_internal,

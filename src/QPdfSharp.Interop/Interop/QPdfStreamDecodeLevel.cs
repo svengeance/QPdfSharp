@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfStreamDecodeLevel : uint
+internal enum QPdfStreamDecodeLevel : uint
 {
     qpdf_dl_none = 0,
     qpdf_dl_generalized,

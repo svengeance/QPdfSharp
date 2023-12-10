@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum PdfAnnotationFlag : uint
+internal enum PdfAnnotationFlag : uint
 {
     an_invisible = 1 << 0,
     an_hidden = 1 << 1,

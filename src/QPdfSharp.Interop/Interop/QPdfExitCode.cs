@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfExitCode : uint
+internal enum QPdfExitCode : uint
 {
     qpdf_exit_success = 0,
     qpdf_exit_error = 2,

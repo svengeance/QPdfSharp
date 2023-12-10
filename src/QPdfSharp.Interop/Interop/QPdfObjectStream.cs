@@ -1,7 +1,7 @@
-namespace QPdf.Interop;
+namespace QPdfSharp.Interop;
 
 [NativeTypeName("unsigned int")]
-public enum QPdfObjectStream : uint
+internal enum QPdfObjectStream : uint
 {
     qpdf_o_disable = 0,
     qpdf_o_preserve,
