@@ -47,4 +47,3 @@ CMD ~/.dotnet/tools/ClangSharpPInvokeGenerator \
     --methodClassName QPdfInterop \
     --namespace QPdfSharp.Interop \
     --output /output \
-    --prefixStrip clang_
