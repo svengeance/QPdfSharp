@@ -21,7 +21,7 @@ public unsafe class QPdf: IDisposable
         }
     }
 
-    public QPdf(ref ReadOnlyMemory<byte> bytes, string name = "", string password = "")
+    public QPdf(ReadOnlyMemory<byte> bytes, string name = "", string password = "")
     {
         using var fileBytesHandle = bytes.Pin();
 
