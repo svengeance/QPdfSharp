@@ -291,7 +291,7 @@ csharp_new_line_within_query_expression_clauses = true
 #   require a preferred modifier order,
 ###############################################################################
 [*.cs]
-csharp_prefer_braces = true:error
+csharp_prefer_braces = when_multiline:error
 csharp_prefer_simple_default_expression = true:error
 csharp_prefer_simple_using_statement = true:error
 csharp_prefer_static_local_function = true:error
@@ -398,8 +398,8 @@ csharp_space_between_square_brackets = false
 csharp_style_conditional_delegate_call = true:error
 csharp_style_deconstructed_variable_declaration = true:error
 
-csharp_style_expression_bodied_accessors = false:error
-csharp_style_expression_bodied_constructors = false:error
+csharp_style_expression_bodied_accessors = true:error
+csharp_style_expression_bodied_constructors = true:error
 csharp_style_expression_bodied_indexers = when_on_single_line:error
 csharp_style_expression_bodied_lambdas = true:error
 csharp_style_expression_bodied_local_functions = false:error
