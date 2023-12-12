@@ -6,7 +6,7 @@ public class QPdfTests
     public void Can_get_page_count()
     {
         // Arrange
-        using var qpdf = new QPdf("Assets/grug.pdf");
+        using var qpdf = new QPdf(TestAssets.Grug);
 
         // Act
         var numPages = qpdf.GetPageCount();
@@ -31,7 +31,7 @@ public class QPdfTests
     public void Can_read_pdf_from_file_path()
     {
         // Arrange
-        var fileName = "Assets/grug.pdf";
+        var fileName = TestAssets.Grug;
 
         // Act
         var createPdfFromFile = () => new QPdf(fileName);
@@ -44,7 +44,7 @@ public class QPdfTests
     public async Task Can_read_pdf_from_memory()
     {
         // Arrange
-        var fileName = "Assets/grug.pdf";
+        var fileName = TestAssets.Grug;
         var fileBytes = await File.ReadAllBytesAsync(fileName);
 
         // Act
@@ -61,7 +61,7 @@ public class QPdfTests
         var outputFileName = "qgrug.pdf";
 
         // Act
-        var qpdf = new QPdf("Assets/grug.pdf");
+        var qpdf = new QPdf(TestAssets.Grug);
         qpdf.WriteFile(outputFileName);
         qpdf.Dispose();
 
@@ -75,10 +75,10 @@ public class QPdfTests
     public async Task Can_write_pdf_bytes()
     {
         // Arrange
-        var existingBytes = await File.ReadAllBytesAsync("Assets/grug.pdf");
+        var existingBytes = await File.ReadAllBytesAsync(TestAssets.Grug);
 
         // Act
-        using var qpdf = new QPdf("Assets/grug.pdf");
+        using var qpdf = new QPdf(TestAssets.Grug);
         var getPdfBytes = () => qpdf.WriteBytes().ToArray();
 
         // Assert
@@ -89,10 +89,10 @@ public class QPdfTests
     public async Task Can_write_pdf_stream()
     {
         // Arrange
-        var existingBytes = await File.ReadAllBytesAsync("Assets/grug.pdf");
+        var existingBytes = await File.ReadAllBytesAsync(TestAssets.Grug);
 
         // Act
-        using var qpdf = new QPdf("Assets/grug.pdf");
+        using var qpdf = new QPdf(TestAssets.Grug);
         var getPdfStream = () => qpdf.WriteStream();
 
         // Assert
