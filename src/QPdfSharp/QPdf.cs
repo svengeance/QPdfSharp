@@ -7,6 +7,8 @@ namespace QPdfSharp;
 
 public unsafe class QPdf: IDisposable
 {
+    public static readonly string Version = new(QPdfInterop.qpdf_get_qpdf_version());
+
     private readonly QPdfData* _qPdfData = QPdfInterop.qpdf_init();
 
     ~QPdf() => ReleaseUnmanagedResources();
@@ -15,10 +17,7 @@ public unsafe class QPdf: IDisposable
     {
         fixed (byte* filePathBytes = Encoding.UTF8.GetBytes(filePath))
         fixed (byte* passwordBytes = Encoding.UTF8.GetBytes(password))
-        {
-            var readResult = QPdfInterop.qpdf_read(_qPdfData, (sbyte*)filePathBytes, (sbyte*)passwordBytes);
-            CheckError(readResult);
-        }
+            CheckError(QPdfInterop.qpdf_read(_qPdfData, (sbyte*)filePathBytes, (sbyte*)passwordBytes));
     }
 
     public QPdf(ReadOnlyMemory<byte> bytes, string name = "", string password = "")
@@ -27,10 +26,13 @@ public unsafe class QPdf: IDisposable
 
         fixed (byte* fileNameBytes = Encoding.UTF8.GetBytes(name))
         fixed (byte* passwordBytes = Encoding.UTF8.GetBytes(password))
-        {
-            var readResult = QPdfInterop.qpdf_read_memory(_qPdfData, (sbyte*)fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, (sbyte*)passwordBytes);
-            CheckError(readResult);
-        }
+            CheckError(QPdfInterop.qpdf_read_memory(_qPdfData, (sbyte*)fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, (sbyte*)passwordBytes));
+    }
+
+    public void WriteFile(string outputFilePath)
+    {
+        fixed (byte* outputFilePathBytes = Encoding.UTF8.GetBytes(outputFilePath))
+            CheckError(QPdfInterop.qpdf_init_write(_qPdfData, (sbyte*)outputFilePathBytes));
     }
 
     public void Dispose()

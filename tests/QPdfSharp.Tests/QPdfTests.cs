@@ -3,6 +3,18 @@ namespace QPdfSharp.Tests;
 public class QPdfTests
 {
     [Fact]
+    public void Can_read_qpdf_version()
+    {
+        // Arrange
+        // Act
+        var getVersion = () => QPdf.Version;
+
+        // Assert
+        var version = getVersion.Should().NotThrow().Subject;
+        Version.TryParse(version, out _).Should().BeTrue();
+    }
+
+    [Fact]
     public void Can_read_pdf_from_file_path()
     {
         // Arrange
@@ -12,7 +24,7 @@ public class QPdfTests
         var createQPdfFromFile = () => new QPdf(fileName);
 
         // Assert
-        _ = createQPdfFromFile.ShouldNotThrow();
+        createQPdfFromFile.Should().NotThrow();
     }
 
     [Fact]
@@ -26,6 +38,23 @@ public class QPdfTests
         var createQPdfFromBytes = () => new QPdf(fileBytes);
 
         // Assert
-        _ = createQPdfFromBytes.ShouldNotThrow();
+        createQPdfFromBytes.Should().NotThrow();
+    }
+
+    [Fact]
+    public void Can_write_pdf_file()
+    {
+        // Arrange
+        var outputFileName = "qgrug.pdf";
+
+        // Act
+        var grugQpdf = new QPdf("Assets/grug.pdf");
+        grugQpdf.WriteFile(outputFileName);
+        grugQpdf.Dispose();
+
+        // Assert
+        File.Exists(outputFileName).Should().BeTrue();
+        File.Delete(outputFileName);
     }
 }
+
