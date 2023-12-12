@@ -34,6 +34,8 @@ public unsafe class QPdf: IDisposable
     {
         fixed (byte* outputFilePathBytes = Encoding.UTF8.GetBytes(outputFilePath))
             CheckError(QPdfInterop.qpdf_init_write(_qPdfData, (sbyte*)outputFilePathBytes));
+
+        QPdfInterop.qpdf_write(_qPdfData);
     }
 
     public ReadOnlySpan<byte> WriteBytes()
@@ -46,6 +48,18 @@ public unsafe class QPdf: IDisposable
         CheckError();
 
         return new ReadOnlySpan<byte>(buffer, (int)bufferLength);
+    }
+
+    public Stream WriteStream()
+    {
+        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
+        CheckError(QPdfInterop.qpdf_write(_qPdfData));
+
+        var buffer = QPdfInterop.qpdf_get_buffer(_qPdfData);
+        var bufferLength = QPdfInterop.qpdf_get_buffer_length(_qPdfData);
+        CheckError();
+
+        return new UnmanagedMemoryStream(buffer, (long)bufferLength);
     }
 
     public void Dispose()
