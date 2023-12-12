@@ -48,13 +48,26 @@ public class QPdfTests
         var outputFileName = "qgrug.pdf";
 
         // Act
-        var grugQpdf = new QPdf("Assets/grug.pdf");
+        using var grugQpdf = new QPdf("Assets/grug.pdf");
         grugQpdf.WriteFile(outputFileName);
-        grugQpdf.Dispose();
 
         // Assert
         File.Exists(outputFileName).Should().BeTrue();
         File.Delete(outputFileName);
+    }
+
+    [Fact]
+    public async Task Can_write_pdf_bytes()
+    {
+        // Arrange
+        var existingBytes = await File.ReadAllBytesAsync("Assets/grug.pdf");
+
+        // Act
+        using var grugQpdf = new QPdf("Assets/grug.pdf");
+        var getPdfBytes = () => grugQpdf.WriteBytes().ToArray();
+
+        // Assert
+        getPdfBytes.Should().NotThrow();
     }
 }
 

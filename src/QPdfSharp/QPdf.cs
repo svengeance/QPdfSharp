@@ -1,5 +1,6 @@
 ﻿// Copyright © Stephen (Sven) Vernyi and Contributors. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
+using System.Runtime.InteropServices;
 using System.Text;
 using QPdfSharp.Interop;
 
@@ -33,6 +34,18 @@ public unsafe class QPdf: IDisposable
     {
         fixed (byte* outputFilePathBytes = Encoding.UTF8.GetBytes(outputFilePath))
             CheckError(QPdfInterop.qpdf_init_write(_qPdfData, (sbyte*)outputFilePathBytes));
+    }
+
+    public ReadOnlySpan<byte> WriteBytes()
+    {
+        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
+        CheckError(QPdfInterop.qpdf_write(_qPdfData));
+
+        var buffer = QPdfInterop.qpdf_get_buffer(_qPdfData);
+        var bufferLength = QPdfInterop.qpdf_get_buffer_length(_qPdfData);
+        CheckError();
+
+        return new ReadOnlySpan<byte>(buffer, (int)bufferLength);
     }
 
     public void Dispose()
