@@ -20,8 +20,11 @@ public unsafe class QPdf: IDisposable
             CheckError(QPdfInterop.qpdf_read(_qPdfData, (sbyte*)filePathBytes, (sbyte*)passwordBytes));
     }
 
-    public QPdf(ReadOnlyMemory<byte> bytes, string name = "", string password = "")
+    public QPdf(ReadOnlyMemory<byte> bytes, string name = "in-memory pdf", string password = "")
     {
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException("Must give a non-null non-empty name for an in-memory PDF.", nameof(name));
+
         using var fileBytesHandle = bytes.Pin();
 
         fixed (byte* fileNameBytes = Encoding.UTF8.GetBytes(name))
