@@ -3,6 +3,19 @@ namespace QPdfSharp.Tests;
 public class QPdfTests
 {
     [Fact]
+    public void Can_get_page_count()
+    {
+        // Arrange
+        using var qpdf = new QPdf("Assets/grug.pdf");
+
+        // Act
+        var numPages = qpdf.GetPageCount();
+
+        // Assert
+        numPages.Should().Be(19);
+    }
+
+    [Fact]
     public void Can_read_qpdf_version()
     {
         // Arrange
@@ -21,10 +34,10 @@ public class QPdfTests
         var fileName = "Assets/grug.pdf";
 
         // Act
-        var createQPdfFromFile = () => new QPdf(fileName);
+        var createPdfFromFile = () => new QPdf(fileName);
 
         // Assert
-        createQPdfFromFile.Should().NotThrow();
+        createPdfFromFile.Should().NotThrow();
     }
 
     [Fact]
@@ -35,10 +48,10 @@ public class QPdfTests
         var fileBytes = await File.ReadAllBytesAsync(fileName);
 
         // Act
-        var createQPdfFromBytes = () => new QPdf(fileBytes);
+        var createPdfFromBytes = () => new QPdf(fileBytes);
 
         // Assert
-        createQPdfFromBytes.Should().NotThrow();
+        createPdfFromBytes.Should().NotThrow();
     }
 
     [Fact]
@@ -48,9 +61,9 @@ public class QPdfTests
         var outputFileName = "qgrug.pdf";
 
         // Act
-        var grugQpdf = new QPdf("Assets/grug.pdf");
-        grugQpdf.WriteFile(outputFileName);
-        grugQpdf.Dispose();
+        var qpdf = new QPdf("Assets/grug.pdf");
+        qpdf.WriteFile(outputFileName);
+        qpdf.Dispose();
 
         // Assert
         File.Exists(outputFileName).Should().BeTrue();
@@ -65,8 +78,8 @@ public class QPdfTests
         var existingBytes = await File.ReadAllBytesAsync("Assets/grug.pdf");
 
         // Act
-        using var grugQpdf = new QPdf("Assets/grug.pdf");
-        var getPdfBytes = () => grugQpdf.WriteBytes().ToArray();
+        using var qpdf = new QPdf("Assets/grug.pdf");
+        var getPdfBytes = () => qpdf.WriteBytes().ToArray();
 
         // Assert
         getPdfBytes.Should().NotThrow().Subject.Should().NotBeEmpty();
@@ -79,8 +92,8 @@ public class QPdfTests
         var existingBytes = await File.ReadAllBytesAsync("Assets/grug.pdf");
 
         // Act
-        using var grugQpdf = new QPdf("Assets/grug.pdf");
-        var getPdfStream = () => grugQpdf.WriteStream();
+        using var qpdf = new QPdf("Assets/grug.pdf");
+        var getPdfStream = () => qpdf.WriteStream();
 
         // Assert
         var pdfStream = getPdfStream.Should().NotThrow().Subject;

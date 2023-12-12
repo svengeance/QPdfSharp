@@ -1,6 +1,5 @@
 ﻿// Copyright © Stephen (Sven) Vernyi and Contributors. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
-using System.Runtime.InteropServices;
 using System.Text;
 using QPdfSharp.Interop;
 
@@ -30,12 +29,20 @@ public unsafe class QPdf: IDisposable
             CheckError(QPdfInterop.qpdf_read_memory(_qPdfData, (sbyte*)fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, (sbyte*)passwordBytes));
     }
 
+    public int GetPageCount()
+    {
+        var pageCount = QPdfInterop.qpdf_get_num_pages(_qPdfData);
+        CheckError();
+
+        return pageCount;
+    }
+
     public void WriteFile(string outputFilePath)
     {
         fixed (byte* outputFilePathBytes = Encoding.UTF8.GetBytes(outputFilePath))
             CheckError(QPdfInterop.qpdf_init_write(_qPdfData, (sbyte*)outputFilePathBytes));
 
-        QPdfInterop.qpdf_write(_qPdfData);
+        CheckError(QPdfInterop.qpdf_write(_qPdfData));
     }
 
     public ReadOnlySpan<byte> WriteBytes()
