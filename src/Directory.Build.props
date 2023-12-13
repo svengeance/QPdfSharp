@@ -12,13 +12,13 @@
 
     <PropertyGroup>
         <Authors>Stephen (Sven) Vernyi</Authors>
-        <ContinuousIntegrationBuild Condition="'$(GITHUB_RUN_ID)' != ''">true</ContinuousIntegrationBuild>
+        <Copyright>Stephen (Sven) Vernyi</Copyright>
+        <Description>A .NET Standard wrapper around the QPDF library. </Description>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <PackageValidationBaselineVersion>17.0.0</PackageValidationBaselineVersion>
         <Product>QPdfSharp</Product>
         <RootNamespace>QPdfSharp</RootNamespace>
-        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionPrefix>0.1.0</VersionPrefix>
     </PropertyGroup>
 
 </Project>

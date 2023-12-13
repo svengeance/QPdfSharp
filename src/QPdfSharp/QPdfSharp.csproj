@@ -1,11 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
+    <PropertyGroup>
+      <ContinuousIntegrationBuild Condition="'$(GITHUB_RUN_ID)' != ''">true</ContinuousIntegrationBuild>
+      <Title>QPdfSharp</Title>
+      <PackageProjectUrl>https://github.com/svengeance/QPdfSharp</PackageProjectUrl>
+      <PackageLicense>MIT License</PackageLicense>
+      <PackageIcon>QPdfSharp_128.png</PackageIcon>
+      <RepositoryUrl>https://github.com/svengeance/QPdfSharp</RepositoryUrl>
+      <RepositoryType>Git</RepositoryType>
+    </PropertyGroup>
+  
     <ItemGroup>
       <ProjectReference Include="..\QPdfSharp.Interop\QPdfSharp.Interop.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="System.Memory" Version="4.5.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\..\assets\QPdfSharp_128.png">
+        <Pack>True</Pack>
+        <PackagePath>./</PackagePath>
+        <Link>QPdfSharp_128.png</Link>
+      </None>
     </ItemGroup>
 
 </Project>
