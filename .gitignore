@@ -1,4 +1,8 @@
-﻿# Common IntelliJ Platform excludes
+﻿# Custom Exclusions
+artifacts/
+scripts/tmp/
+
+# Common IntelliJ Platform excludes
 
 # User specific
 **/.idea/**/workspace.xml

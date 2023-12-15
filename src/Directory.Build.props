@@ -13,12 +13,12 @@
     <PropertyGroup>
         <Authors>Stephen (Sven) Vernyi</Authors>
         <Copyright>Stephen (Sven) Vernyi</Copyright>
-        <Description>A .NET Standard wrapper around the QPDF library. </Description>
+        <Description>A .NET Standard wrapper around the QPDF library.</Description>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <Product>QPdfSharp</Product>
         <RootNamespace>QPdfSharp</RootNamespace>
-        <VersionPrefix>0.1.0</VersionPrefix>
+        <Version>0.1.0</Version>
     </PropertyGroup>
 
 </Project>
