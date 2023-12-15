@@ -1,5 +1,6 @@
 ﻿# Custom Exclusions
 artifacts/
+!.gitkeep
 scripts/tmp/
 
 # Common IntelliJ Platform excludes
