@@ -1,4 +1,6 @@
-﻿on:
+﻿name: Build and Publish QPdf.RuntimeLibraries NuGet
+
+on:
   workflow_dispatch:
 #  schedule:
 #    - cron:  '0 0 * * *'
