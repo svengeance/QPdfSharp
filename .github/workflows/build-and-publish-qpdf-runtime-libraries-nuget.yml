@@ -1,0 +1,33 @@
+﻿on:
+  workflow_dispatch:
+#  schedule:
+#    - cron:  '0 0 * * *'
+
+jobs:
+  check-needs-new-package:
+    outputs:
+      needs_new_package: ${{ steps.get-latest-release.outputs.needs_new_package }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: get-latest-release
+        name: Get latest release
+        run: |
+          QPDF_VERSION=$(curl --silent "https://api.github.com/repos/qpdf/qpdf/releases/latest" | jq -r .tag_name)
+          echo "qpdf_version=${QPDF_VERSION}"
+          NUGET_URL="https://www.nuget.org/api/v2/package/qpdf.runtime.libraries/${QPDF_VERSION:1}"
+          echo "nuget_url=${NUGET_URL}"
+          NEEDS_NEW_PACKAGE=$(curl -s -I -o /dev/null "${NUGET_URL}) && echo 'false' || echo 'true')
+          echo "needs_new_package=${NEEDS_NEW_PACKAGE}"
+          echo "needs_new_package=${NEEDS_NEW_PACKAGE}" >> $GITHUB_ENV
+
+  build:
+    needs: check-needs-new-package
+    if: needs.check-needs-new-package.outputs.needs_new_package == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: Hello yes we might want to build a package here.
+#      - uses: actions/checkout@v2
+#      - name: Setup .NET Core
+#        uses: actions/setup-dotnet@v3
+#        with:
+#          dotnet-version: '8.x'
