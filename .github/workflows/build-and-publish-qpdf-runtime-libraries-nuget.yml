@@ -18,8 +18,10 @@ jobs:
           echo "qpdf_version=${QPDF_VERSION}"
           NUGET_URL="https://www.nuget.org/api/v2/package/qpdf.runtime.libraries/${QPDF_VERSION:1}"
           echo "nuget_url=${NUGET_URL}"
-          curl -fsIo /dev/null "${NUGET_URL}"
-          NEEDS_NEW_PACKAGE=$([[ $? -eq 0 ]] && echo 'false' || echo 'true')
+          PACKAGE_CHECK_EXIT_CODE=0
+          curl -fsIo /dev/null "${NUGET_URL}" || PACKAGE_CHECK_EXIT_CODE=$?
+          echo "package_check_exit_code=${PACKAGE_CHECK_EXIT_CODE}"
+          NEEDS_NEW_PACKAGE=$([[ ${PACKAGE_CHECK_EXIT_CODE} -eq 0 ]] && echo 'false' || echo 'true')
           echo "needs_new_package=${NEEDS_NEW_PACKAGE}"
           echo "needs_new_package=${NEEDS_NEW_PACKAGE}" >> $GITHUB_ENV
 
