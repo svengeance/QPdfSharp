@@ -30,9 +30,12 @@ jobs:
     if: needs.check.outputs.needs_new_package == 'true'
     runs-on: ubuntu-latest
     steps:
-      - run: Hello yes we might want to build a package here.
-#      - uses: actions/checkout@v2
-#      - name: Setup .NET Core
-#        uses: actions/setup-dotnet@v3
-#        with:
-#          dotnet-version: '8.x'
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+      - name: Run Build-Runtime-Libraries Script
+        run: ./build-runtime-libraries.sh
+      - name: Verify NuGet Creation
+        run: ls -la ./artifacts
