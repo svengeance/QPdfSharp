@@ -6,7 +6,7 @@ on:
 #    - cron:  '0 0 * * *'
 
 jobs:
-  check-needs-new-package:
+  check:
     outputs:
       needs_new_package: ${{ steps.get-latest-release.outputs.needs_new_package }}
     runs-on: ubuntu-latest
@@ -23,11 +23,11 @@ jobs:
           echo "package_check_exit_code=${PACKAGE_CHECK_EXIT_CODE}"
           NEEDS_NEW_PACKAGE=$([[ ${PACKAGE_CHECK_EXIT_CODE} -eq 0 ]] && echo 'false' || echo 'true')
           echo "needs_new_package=${NEEDS_NEW_PACKAGE}"
-          echo "needs_new_package=${NEEDS_NEW_PACKAGE}" >> $GITHUB_ENV
+          echo "needs_new_package=${NEEDS_NEW_PACKAGE}" >> $GITHUB_OUTPUT
 
   build:
-    needs: check-needs-new-package
-    if: needs.check-needs-new-package.outputs.needs_new_package == 'true'
+    needs: check
+    if: needs.check.outputs.needs_new_package == 'true'
     runs-on: ubuntu-latest
     steps:
       - run: Hello yes we might want to build a package here.
