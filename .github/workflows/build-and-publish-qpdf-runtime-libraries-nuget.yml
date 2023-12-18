@@ -36,6 +36,6 @@ jobs:
           dotnet-version: '8.x'
       - uses: actions/checkout@v2
       - name: Run Build-Runtime-Libraries Script
-        run: ${GITHUB_WORKSPACE}/scripts/build-runtime-libraries.sh
+        run: ${GITHUB_WORKSPACE}/scripts/build-runtime-libraries-nuget.sh
       - name: Verify NuGet Creation
         run: ls -la ./artifacts
