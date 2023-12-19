@@ -48,7 +48,7 @@ cat > ./QPdf.RuntimeLibraries.csproj <<EOL
         <PackageIcon>QPdf_128.png</PackageIcon>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageReleaseNotes>Updates QPdf library to ${VERSION}</PackageReleaseNotes>
-        <PackageTags>qpdf qpdf.net qpdfsharp</PackageTags>
+        <PackageTags>pdf qpdf qpdf.net qpdfsharp</PackageTags>
         <PackageVersion>${VERSION:1}</PackageVersion>
         <Product>QPdfSharp</Product>
         <RepositoryUrl>https://github.com/svengeance/QPdfSharp</RepositoryUrl>
