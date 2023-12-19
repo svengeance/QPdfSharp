@@ -1,24 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <Authors>Stephen (Sven) Vernyi</Authors>
-        <Copyright>Stephen (Sven) Vernyi</Copyright>
-        <Description>A .NET Standard wrapper around the QPDF library.</Description>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <Product>QPdfSharp</Product>
-        <RootNamespace>QPdfSharp</RootNamespace>
-        <Version>0.1.0</Version>
-    </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Stephen (Sven) Vernyi</Authors>
+    <Copyright>Stephen (Sven) Vernyi</Copyright>
+    <Description>A .NET Standard wrapper around the QPDF library.</Description>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/svengeance/QPdfSharp</PackageProjectUrl>
+    <PackageTags>pdf qpdf qpdf.net qpdfsharp</PackageTags>
+    <Product>QPdfSharp</Product>
+    <RepositoryUrl>https://github.com/svengeance/QPdfSharp</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <RootNamespace>QPdfSharp</RootNamespace>
+  </PropertyGroup>
 
 </Project>

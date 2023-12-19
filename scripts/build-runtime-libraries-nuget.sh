@@ -30,56 +30,56 @@ cd ./QPdf.RuntimeLibraries
 cat > ./QPdf.RuntimeLibraries.csproj <<EOL
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
 
-        <IncludeBuildOutput>false</IncludeBuildOutput>
-        <IncludeSymbols>false</IncludeSymbols>
-        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 
-        <Authors>Jay Berkenbilt and Stephen (Sven) Vernyi</Authors>
-        <Copyright>Jay Berkenbilt and Stephen (Sven) Vernyi</Copyright>
-        <Title>QPdfSharp.RuntimeLibraries</Title>
-        <Description>Native package that wraps the QPdf binaries.</Description>
-        <PackageProjectUrl>https://github.com/qpdf/qpdf</PackageProjectUrl>
-        <PackageLicense>Apache License 2.0</PackageLicense>
-        <!-- /qpdfsharp/scripts/tmp/package -->
-        <PackageIcon>QPdf_128.png</PackageIcon>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <PackageReleaseNotes>Updates QPdf library to ${VERSION}</PackageReleaseNotes>
-        <PackageTags>pdf qpdf qpdf.net qpdfsharp</PackageTags>
-        <PackageVersion>${VERSION:1}</PackageVersion>
-        <Product>QPdfSharp</Product>
-        <RepositoryUrl>https://github.com/svengeance/QPdfSharp</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
-        <Version>${VERSION:1}</Version>
-    </PropertyGroup>
+    <Authors>Jay Berkenbilt and Stephen (Sven) Vernyi</Authors>
+    <Copyright>Jay Berkenbilt and Stephen (Sven) Vernyi</Copyright>
+    <Description>Native package that wraps the QPdf binaries.</Description>
+    <PackageProjectUrl>https://github.com/qpdf/qpdf</PackageProjectUrl>
+    <PackageLicense>Apache License 2.0</PackageLicense>
+    <!-- /qpdfsharp/scripts/tmp/package -->
+    <PackageIcon>QPdf_128.png</PackageIcon>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReleaseNotes>Updates QPdf library to ${VERSION}</PackageReleaseNotes>
+    <PackageTags>pdf qpdf qpdf.net qpdfsharp</PackageTags>
+    <PackageVersion>${VERSION:1}</PackageVersion>
+    <Product>QPdfSharp</Product>
+    <RepositoryUrl>https://github.com/svengeance/QPdfSharp</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <Title>QPdfSharp.RuntimeLibraries</Title>
+    <Version>${VERSION:1}</Version>
+  </PropertyGroup>
 
-    <ItemGroup>
-    	<Content Include="runtimes/**/*.so*" copyToOutput="true">
-      	    <IncludeInPackage>true</IncludeInPackage>
-      	    <CopyToOutput>true</CopyToOutput>
-      	    <BuildAction>Content</BuildAction>
-      	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <PackagePath>/runtimes</PackagePath>
-    	</Content>
-        <Content Include="runtimes/**/*.dll" copyToOutput="true">
-            <IncludeInPackage>true</IncludeInPackage>
-            <CopyToOutput>true</CopyToOutput>
-            <BuildAction>Content</BuildAction>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <PackagePath>/runtimes</PackagePath>
-        </Content>
-    </ItemGroup>
+  <ItemGroup>
+    <Content Include="runtimes/**/*.so*" copyToOutput="true">
+      <IncludeInPackage>true</IncludeInPackage>
+      <CopyToOutput>true</CopyToOutput>
+      <BuildAction>Content</BuildAction>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <PackagePath>/runtimes</PackagePath>
+    </Content>
+      <Content Include="runtimes/**/*.dll" copyToOutput="true">
+        <IncludeInPackage>true</IncludeInPackage>
+        <CopyToOutput>true</CopyToOutput>
+        <BuildAction>Content</BuildAction>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <PackagePath>/runtimes</PackagePath>
+      </Content>
+  </ItemGroup>
 
-    <ItemGroup>
-        <None Include="../../../assets/QPdf_128.png">
-          <Pack>True</Pack>
-          <PackagePath>./</PackagePath>
-          <Link>QPdfSharp_128.png</Link>
-        </None>
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="../../../assets/QPdf_128.png">
+      <Pack>True</Pack>
+      <PackagePath>./</PackagePath>
+      <Link>QPdfSharp_128.png</Link>
+    </None>
+  </ItemGroup>
 
 </Project>
 EOL
