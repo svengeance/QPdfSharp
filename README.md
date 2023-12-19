@@ -11,9 +11,13 @@ See the below excerpt for a summary on QPDF: for further details, [consult the q
 ## Status
 This project is in its infancy. While early versions may be published, the library should **not** be considered stable until version 1.0.0 is released.
 
-# Installation
+## Installation
+< Installation Instructions Pending >
 
-NuGet pending.
+## Usage
+QPdfSharp aims to facilitate usage of the underlying QPDF library by providing a simple, easy-to-use API that is familiar to .NET developers.
+
+< Usage Examples Pending >
 
 ## Runtime Libraries
 QPdfSharp depends on the [QPdf.RuntimeLibraries](https://www.nuget.org/packages/QPdf.RuntimeLibraries) to distribute the appropriate QPDF binaries for your platform.
