@@ -16,7 +16,7 @@ jobs:
         run: |
           QPDF_VERSION=$(curl --silent "https://api.github.com/repos/qpdf/qpdf/releases/latest" | jq -r .tag_name)
           echo "qpdf_version=${QPDF_VERSION}"
-          NUGET_URL="https://www.nuget.org/api/v2/package/QPdf.RuntimeLibraries/${QPDF_VERSION:1}"
+          NUGET_URL="https://globalcdn.nuget.org/packages/qpdf.runtimelibraries.${QPDF_VERSION:1}.nupkg"
           echo "nuget_url=${NUGET_URL}"
           PACKAGE_CHECK_EXIT_CODE=0
           curl -fsIo /dev/null "${NUGET_URL}" || PACKAGE_CHECK_EXIT_CODE=$?
