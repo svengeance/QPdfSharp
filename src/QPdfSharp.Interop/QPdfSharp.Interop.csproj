@@ -3,5 +3,9 @@
     <ItemGroup>
         <InternalsVisibleTo Include="QPdfSharp" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="QPdf.RuntimeLibraries" Version="11.6.4" />
+    </ItemGroup>
 
 </Project>
