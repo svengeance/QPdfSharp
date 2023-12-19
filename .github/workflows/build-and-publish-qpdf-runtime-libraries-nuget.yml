@@ -34,11 +34,20 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.x'
-      - uses: actions/checkout@v2
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Run Build-Runtime-Libraries Script
         run: |
           SCRIPT="${GITHUB_WORKSPACE}/scripts/build-runtime-libraries-nuget.sh"
           chmod +x "${SCRIPT}"
           "${SCRIPT}"
+
       - name: Verify NuGet Creation
         run: ls -la ./artifacts
+
+      - name: Push NuGet package
+        run: |
+          # push nuget using dotnet push
+          dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ./artifacts/QPdf.RuntimeLibraries*.nupkg
