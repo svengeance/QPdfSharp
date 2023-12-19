@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: get-latest-release
-        name: Get latest release
+        name: Get Latest Release
         run: |
           QPDF_VERSION=$(curl --silent "https://api.github.com/repos/qpdf/qpdf/releases/latest" | jq -r .tag_name)
           echo "qpdf_version=${QPDF_VERSION}"
@@ -47,7 +47,7 @@ jobs:
       - name: Verify NuGet Creation
         run: ls -la ./artifacts
 
-      - name: Push NuGet package
+      - name: Push NuGet Package
         run: |
           # push nuget using dotnet push
           dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ./artifacts/QPdf.RuntimeLibraries*.nupkg
