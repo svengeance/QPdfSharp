@@ -39,8 +39,11 @@ If this is not the case, please open an issue and do not be afraid to roast me.
 
 ## From-Scratch Process
 1: Clone the repository
+
 2: Run `scripts/generate-interop.sh`. This will use CLangSharpPInvokeGenerator to generate the C# interop files.
+
 3: Run `scripts/build-runtime-libraries-nuget.sh`. This will output a NuGet package with the latest QPDF binaries under `artifacts/QPdf.RuntimeLibraries.<version>.nupkg`.
+
 4: Launch the repository in your IDE of choice, and verify tests pass.
 
 # License
