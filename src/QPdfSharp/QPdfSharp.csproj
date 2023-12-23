@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <ContinuousIntegrationBuild Condition="'$(GITHUB_RUN_ID)' != ''">true</ContinuousIntegrationBuild>
     <Title>QPdfSharp</Title>
-    <PackageIcon>QPdfSharp_128.png</PackageIcon>
+    <Description>A .NET Standard wrapper around the QPDF library.</Description>
+    <Product>QPdfSharp</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,14 +12,6 @@
 
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\assets\QPdfSharp_128.png">
-      <Pack>True</Pack>
-      <PackagePath>./</PackagePath>
-      <Link>QPdfSharp_128.png</Link>
-    </None>
   </ItemGroup>
 
 </Project>

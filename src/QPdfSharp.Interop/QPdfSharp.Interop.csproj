@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    
-    <ItemGroup>
-        <InternalsVisibleTo Include="QPdfSharp" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <PackageReference Include="QPdf.RuntimeLibraries" Version="11.6.4" />
-    </ItemGroup>
+
+  <PropertyGroup>
+    <Title>QPdfSharp.Interop</Title>
+    <Description>Interop code for the QPDF library.</Description>
+    <Product>QPdfSharp.Interop</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <InternalsVisibleTo Include="QPdfSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QPdf.RuntimeLibraries" Version="11.6.4" />
+  </ItemGroup>
 
 </Project>
