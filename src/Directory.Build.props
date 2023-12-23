@@ -8,21 +8,28 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_RUN_ID)' != ''">true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <PropertyGroup>
     <Authors>Stephen (Sven) Vernyi</Authors>
     <Copyright>Stephen (Sven) Vernyi</Copyright>
-    <Description>A .NET Standard wrapper around the QPDF library.</Description>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <PackageIcon>QPdfSharp_128.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/svengeance/QPdfSharp</PackageProjectUrl>
     <PackageTags>pdf qpdf qpdf.net qpdfsharp</PackageTags>
-    <Product>QPdfSharp</Product>
     <RepositoryUrl>https://github.com/svengeance/QPdfSharp</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <RootNamespace>QPdfSharp</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\QPdfSharp_128.png">
+      <Pack>True</Pack>
+      <PackagePath>./</PackagePath>
+      <Link>QPdfSharp_128.png</Link>
+    </None>
+  </ItemGroup>
 
 </Project>
