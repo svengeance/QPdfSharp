@@ -23,5 +23,5 @@ jobs:
         run: dotnet build ${GITHUB_WORKSPACE}
 
       - name: Test Solution
-        run: dotnet build ${GITHUB_WORKSPACE}
+        run: dotnet test ${GITHUB_WORKSPACE}
 
