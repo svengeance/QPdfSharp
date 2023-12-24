@@ -72,11 +72,9 @@ public class QPdfTests
     }
 
     [Fact]
-    public async Task Can_write_pdf_bytes()
+    public void Can_write_pdf_bytes()
     {
         // Arrange
-        var existingBytes = await File.ReadAllBytesAsync(TestAssets.Grug);
-
         // Act
         using var qpdf = new QPdf(TestAssets.Grug);
         var getPdfBytes = () => qpdf.WriteBytes().ToArray();
@@ -86,14 +84,12 @@ public class QPdfTests
     }
 
     [Fact]
-    public async Task Can_write_pdf_stream()
+    public void Can_write_pdf_stream()
     {
         // Arrange
-        var existingBytes = await File.ReadAllBytesAsync(TestAssets.Grug);
-
         // Act
         using var qpdf = new QPdf(TestAssets.Grug);
-        var getPdfStream = () => qpdf.WriteStream();
+        var getPdfStream = qpdf.WriteStream;
 
         // Assert
         var pdfStream = getPdfStream.Should().NotThrow().Subject;
