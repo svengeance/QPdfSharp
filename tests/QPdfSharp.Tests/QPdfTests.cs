@@ -77,6 +77,7 @@ public class QPdfTests
         // Arrange
         // Act
         using var qpdf = new QPdf(TestAssets.Grug);
+        // ReSharper disable once AccessToDisposedClosure
         var getPdfBytes = () => qpdf.WriteBytes().ToArray();
 
         // Assert
