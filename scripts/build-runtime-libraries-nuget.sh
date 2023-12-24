@@ -24,6 +24,8 @@ wget --show-progress -qO qpdf_win.zip "${WIN_DOWNLOAD_URL}"
 
 unzip -qjo qpdf_linux.zip "**lib/*.so*" -d ./QPdf.RuntimeLibraries/runtimes/linux-x64/native
 unzip -qjo qpdf_win.zip "**bin/*.dll" -d ./QPdf.RuntimeLibraries/runtimes/win-x64/native
+# Fix library loading issues on linux since we can't control this behavior in .NET Standard
+mv ./QPdf.RuntimeLibraries/runtimes/linux-x64/native/libqpdf.so.29 ./QPdf.RuntimeLibraries/runtimes/linux-x64/native/libqpdf29.so
 
 cd ./QPdf.RuntimeLibraries
 
