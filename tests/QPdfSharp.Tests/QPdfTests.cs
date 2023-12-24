@@ -20,10 +20,9 @@ public class QPdfTests
     {
         // Arrange
         // Act
-        var getVersion = () => QPdf.Version;
+        var version = QPdf.Version;
 
         // Assert
-        var version = getVersion.Should().NotThrow().Subject;
         Version.TryParse(version, out _).Should().BeTrue();
     }
 
@@ -77,11 +76,10 @@ public class QPdfTests
         // Arrange
         // Act
         using var qpdf = new QPdf(TestAssets.Grug);
-        // ReSharper disable once AccessToDisposedClosure
-        var getPdfBytes = () => qpdf.WriteBytes().ToArray();
+        var getPdfBytes = qpdf.WriteBytes().ToArray();
 
         // Assert
-        getPdfBytes.Should().NotThrow().Subject.Should().NotBeEmpty();
+        getPdfBytes.Should().NotBeEmpty();
     }
 
     [Fact]
@@ -90,10 +88,9 @@ public class QPdfTests
         // Arrange
         // Act
         using var qpdf = new QPdf(TestAssets.Grug);
-        var getPdfStream = qpdf.WriteStream;
+        var pdfStream  = qpdf.WriteStream();
 
         // Assert
-        var pdfStream = getPdfStream.Should().NotThrow().Subject;
         pdfStream.Should().NotHaveLength(0);
         pdfStream.Should().BeReadOnly();
     }
