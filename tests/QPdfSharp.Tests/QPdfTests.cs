@@ -58,11 +58,10 @@ public class QPdfTests
     {
         // Arrange
         var outputFileName = "qgrug.pdf";
+        using var qpdf = new QPdf(TestAssets.Grug);
 
         // Act
-        var qpdf = new QPdf(TestAssets.Grug);
         qpdf.WriteFile(outputFileName);
-        qpdf.Dispose();
 
         // Assert
         File.Exists(outputFileName).Should().BeTrue();
@@ -74,8 +73,9 @@ public class QPdfTests
     public void Can_write_pdf_bytes()
     {
         // Arrange
-        // Act
         using var qpdf = new QPdf(TestAssets.Grug);
+
+        // Act
         var getPdfBytes = qpdf.WriteBytes().ToArray();
 
         // Assert
@@ -86,8 +86,9 @@ public class QPdfTests
     public void Can_write_pdf_stream()
     {
         // Arrange
-        // Act
         using var qpdf = new QPdf(TestAssets.Grug);
+
+        // Act
         var pdfStream  = qpdf.WriteStream();
 
         // Assert
