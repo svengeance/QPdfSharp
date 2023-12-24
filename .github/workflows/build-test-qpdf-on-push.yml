@@ -22,6 +22,6 @@ jobs:
       - name: Build Solution
         run: dotnet build ${GITHUB_WORKSPACE}
 
-      - name: Run Test Script
+      - name: Test Solution
         run: dotnet build ${GITHUB_WORKSPACE}
 
