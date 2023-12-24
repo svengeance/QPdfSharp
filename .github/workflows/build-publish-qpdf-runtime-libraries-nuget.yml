@@ -48,6 +48,4 @@ jobs:
         run: ls -la ./artifacts
 
       - name: Push NuGet Package
-        run: |
-          # push nuget using dotnet push
-          dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ./artifacts/QPdf.RuntimeLibraries*.nupkg
+        run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ./artifacts/QPdf.RuntimeLibraries*.nupkg
