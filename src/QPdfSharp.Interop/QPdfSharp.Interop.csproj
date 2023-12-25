@@ -4,6 +4,7 @@
     <Title>QPdfSharp.Interop</Title>
     <Description>Interop code for the QPDF library.</Description>
     <Product>QPdfSharp.Interop</Product>
+    <Version>$(QpdfSharpInteropVersion)</Version>
   </PropertyGroup>
 
   <ItemGroup>

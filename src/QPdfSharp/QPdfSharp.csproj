@@ -4,6 +4,7 @@
     <Title>QPdfSharp</Title>
     <Description>A .NET Standard wrapper around the QPDF library.</Description>
     <Product>QPdfSharp</Product>
+    <Version>$(QpdfSharpVersion)</Version>
   </PropertyGroup>
 
   <ItemGroup>
