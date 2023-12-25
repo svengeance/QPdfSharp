@@ -1,4 +1,4 @@
-﻿name: Build, Test, and Publish QPdfSharp.Interop and QPdfSharp Libraries
+﻿name: Build, Test, and Publish QPdfSharp Libraries
 
 on:
   workflow_dispatch:

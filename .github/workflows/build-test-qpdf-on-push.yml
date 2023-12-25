@@ -1,4 +1,4 @@
-﻿name: Build and Test QPdf
+﻿name: Build and Test QPdfSharp
 
 on:
   push:
