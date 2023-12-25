@@ -1,0 +1,41 @@
+﻿name: Build, Test, and Publish QPdfSharp.Interop and QPdfSharp Libraries
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+    build-test-publish:
+      # TODO: Running on Windows until the next version of QPdf.RuntimeLibraries is released. Please change back after v 11.6.5
+      runs-on: windows-latest
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v2
+
+        - name: Setup .NET Core
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: '8.x'
+
+        - name: Build Solution
+          run: dotnet build ${GITHUB_WORKSPACE}
+
+        - name: Test Solution
+          run: dotnet test ${GITHUB_WORKSPACE}
+
+        - name: Build QPdfSharp Libraries
+          run: "${GITHUB_WORKSPACE}/scripts/build-qpdfsharp-libraries-nuget.sh -p:QPdfSharpVersion=0.3.0 -p:QPdfSharpInteropVersion=1.0.0"
+
+        - name: Verify NuGet Creation
+          run: ls -la ./
+
+        - name: Upload NuGet Package
+          uses: actions/upload-artifact@v4
+          with:
+            if-no-files-found: error
+            name: QPdfSharp NuGet Packages
+            path: ${GITHUB_WORKSPACE}/artifacts
+
+#        - name: Push NuGet Package
+#          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ./artifacts/QPdfSharp*.nupkg
