@@ -39,10 +39,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Build-Runtime-Libraries Script
-        run: |
-          SCRIPT="${GITHUB_WORKSPACE}/scripts/build-runtime-libraries-nuget.sh"
-          chmod +x "${SCRIPT}"
-          "${SCRIPT}"
+        run: "${GITHUB_WORKSPACE}/scripts/build-runtime-libraries-nuget.sh"
 
       - name: Verify NuGet Creation
         run: ls -la ./artifacts
