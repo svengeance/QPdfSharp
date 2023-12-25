@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="QPdf.RuntimeLibraries" Version="11.6.4" />
+    <PackageReference Include="QPdf.RuntimeLibraries" Version="11.7.0" />
   </ItemGroup>
 
 </Project>
