@@ -30,30 +30,23 @@ jobs:
           uses: paulhatch/semantic-version@v5.3.0
           with:
             change_path: "src/QPdfSharp"
-            debug: true
 
         - name: Version Interop Library
           id: version-interop
           uses: paulhatch/semantic-version@v5.3.0
           with:
             change_path: "src/QPdfSharp.Interop"
-            debug: true
             major_pattern: "(MAJOR-INTEROP)"
             minor_pattern: "(MINOR-INTEROP)"
             namespace: Interop
 
-        - name: Dump GH Steps  Context
-          env:
-            STEPS_CONTEXT: ${{ toJson(steps) }}
-          run: echo "${STEPS_CONTEXT}"
-
         - name: Build QPdfSharp Libraries
-          run: "${GITHUB_WORKSPACE}/scripts/build-qpdfsharp-libraries-nuget.sh -p:QPdfSharpVersion=0.3.0 -p:QPdfSharpInteropVersion=1.0.0"
+          env:
+            QPDFSHARP_VERSION: ${{ steps.version-qpdfsharp.outputs.version }}
+            QPDFSHARP_INTEROP_VERSION: ${{ steps.version-interop.outputs.version }}
+          run: "${GITHUB_WORKSPACE}/scripts/build-qpdfsharp-libraries-nuget.sh -p:QPdfSharpVersion=${QPDFSHARP_VERSION} -p:QPdfSharpInteropVersion=${QPDFSHARP_INTEROP_VERSION}"
 
-        - name: Verify NuGet Creation
-          run: ls -la ./
-
-        - name: Upload NuGet Package
+        - name: Upload NuGet Packages
           uses: actions/upload-artifact@v4
           with:
             if-no-files-found: error
