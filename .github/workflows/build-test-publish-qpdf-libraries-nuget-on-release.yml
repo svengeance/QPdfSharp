@@ -43,7 +43,9 @@ jobs:
             namespace: Interop
 
         - name: Dump GH Steps  Context
-          run: echo "${{ toJson(steps) }}"
+          env:
+            STEPS_CONTEXT: ${{ toJson(steps) }}
+          run: echo "${STEPS_CONTEXT}"
 
         - name: Build QPdfSharp Libraries
           run: "${GITHUB_WORKSPACE}/scripts/build-qpdfsharp-libraries-nuget.sh -p:QPdfSharpVersion=0.3.0 -p:QPdfSharpInteropVersion=1.0.0"
