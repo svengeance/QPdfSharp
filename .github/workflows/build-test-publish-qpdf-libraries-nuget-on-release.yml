@@ -82,7 +82,7 @@ jobs:
           run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp.Interop*.nupkg
 
     create-gh-release:
-      if: ${{ !failure() && !cancelled() && success('publish-qpdfsharp')) }}
+      if: ${{ !failure() && !cancelled() && success('publish-qpdfsharp')  }}
       permissions:
         contents: write
       name: Create GitHub Release
