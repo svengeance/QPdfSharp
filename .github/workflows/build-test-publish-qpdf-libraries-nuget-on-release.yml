@@ -5,6 +5,7 @@ on:
 
 jobs:
     build-test-version:
+      name: Build, Test, and Version QPdfSharp Libraries
       outputs:
         qpdfsharp_version: ${{ steps.version-qpdfsharp.outputs.version }}
         qpdfsharp_interop_version: ${{ steps.version-qpdfsharp-interop.outputs.version }}
