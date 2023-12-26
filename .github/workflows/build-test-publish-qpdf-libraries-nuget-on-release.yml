@@ -2,11 +2,12 @@
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
 
 jobs:
-    build-test-publish:
+    build-test-version:
+      outputs:
+        qpdfsharp_version: ${{ steps.version-qpdfsharp.outputs.version }}
+        qpdfsharp_interop_version: ${{ steps.version-qpdfsharp-interop.outputs.version }}
       runs-on: ubuntu-latest
       steps:
         - name: Checkout Repository
@@ -31,8 +32,8 @@ jobs:
           with:
             change_path: "src/QPdfSharp"
 
-        - name: Version Interop Library
-          id: version-interop
+        - name: Version QPdfSharp.Interop Library
+          id: version-qpdfsharp-interop
           uses: paulhatch/semantic-version@v5.3.0
           with:
             change_path: "src/QPdfSharp.Interop"
@@ -43,15 +44,77 @@ jobs:
         - name: Build QPdfSharp Libraries
           env:
             QPDFSHARP_VERSION: ${{ steps.version-qpdfsharp.outputs.version }}
-            QPDFSHARP_INTEROP_VERSION: ${{ steps.version-interop.outputs.version }}
+            QPDFSHARP_INTEROP_VERSION: ${{ steps.version-qpdfsharp-interop.outputs.version }}
           run: "${GITHUB_WORKSPACE}/scripts/build-qpdfsharp-libraries-nuget.sh -p:QPdfSharpVersion=${QPDFSHARP_VERSION} -p:QPdfSharpInteropVersion=${QPDFSHARP_INTEROP_VERSION}"
 
-        - name: Upload NuGet Packages
+        - name: Upload QPdfSharp Nuggets
           uses: actions/upload-artifact@v4
           with:
-            if-no-files-found: error
-            name: QPdfSharp NuGet Packages
-            path: ${GITHUB_WORKSPACE}/artifacts
+            name: QPdfSharp NuGet
+            path: ${{ github.workspace }}/artifacts/QPdfSharp*.nupkg
 
-#        - name: Push NuGet Package
-#          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ./artifacts/QPdfSharp*.nupkg
+    publish-qpdfsharp:
+      if: needs.build-test-version.outputs.qpdfsharp_version.changed
+      name: Publish QPdfSharp
+      needs: build-test-version
+      runs-on: ubuntu-latest
+      steps:
+        - name: Download QPdfSharp Nuggets
+          uses: actions/download-artifact@v4
+          with:
+            pattern: QPdfSharp.[0-9].*.nupkg
+
+        - name: Publish NuGet Package
+          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp*.nupkg
+
+    publish-qpdfsharp-interop:
+      if: needs.build-test-version.outputs.qpdfsharp_interop_version.changed
+      name: Publish QPdfSharp.Interop
+      needs: build-test-version
+      runs-on: ubuntu-latest
+      steps:
+        - name: Download QPdfSharp Nuggets
+          uses: actions/download-artifact@v4
+          with:
+            pattern: QPdfSharp.Interop*.nupkg
+
+        - name: Publish NuGet Package
+          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp.Interop*.nupkg
+
+    create-gh-release:
+      if: ${{ !failure() && !cancelled() && success('publish-qpdfsharp')) }}
+      permissions:
+        contents: write
+      name: Create GitHub Release
+      needs: [publish-qpdfsharp]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout Changelog
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: |
+              RELEASE_NOTES.md
+              CHANGELOG.md
+            sparse-checkout-cone-mode: false
+
+        - name: Download Nuggets
+          uses: actions/download-artifact@v4
+          with:
+            pattern: QPdfSharp.*.nupkg
+
+        - name: Update Changelog with Release Notes
+          run: |
+            cat RELEASE_NOTES.md CHANGELOG.md > CHANGELOG.md
+
+        - uses: ncipollo/release-action@v1
+          with:
+            artifacts: "QPdfSharp.*.nupkg"
+            bodyFile: "RELEASE_NOTES.md"
+            commit: ${{ github.sha }}
+            generateReleaseNotes: true
+            tag: ${{ steps.version-qpdfsharp.outputs.version }}
+
+        - name: Update Changelog with Release Notes
+          uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            commit_message: "Update CHANGELOG.md with Release Notes"
