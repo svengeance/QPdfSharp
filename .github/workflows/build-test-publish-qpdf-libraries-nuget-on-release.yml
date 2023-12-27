@@ -74,7 +74,7 @@ jobs:
             name: QPdfSharp
 
         - name: Publish NuGet Package
-          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp*.nupkg
+          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp*.nupkg
 
     publish-qpdfsharp-interop:
       if: needs.build-test-version.outputs.qpdfsharp_interop_changed
@@ -88,7 +88,7 @@ jobs:
             name: QPdfSharp.Interop
 
         - name: Publish NuGet Package
-          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp.Interop*.nupkg
+          run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp.Interop*.nupkg
 
     create-gh-release:
       if: ${{ !failure() && !cancelled() && success('publish-qpdfsharp')  }}
