@@ -7,10 +7,12 @@ jobs:
     build-test-version:
       name: Build, Test, and Version QPdfSharp Libraries
       outputs:
-        qpdfsharp_version: ${{ steps.version-qpdfsharp.outputs.version }}
         qpdfsharp_changed: ${{ steps.version-qpdfsharp.outputs.changed }}
-        qpdfsharp_interop_version: ${{ steps.version-qpdfsharp-interop.outputs.version }}
+        qpdfsharp_version: ${{ steps.version-qpdfsharp.outputs.version }}
+        qpdfsharp_version_tag: ${{ steps.version-qpdfsharp.outputs.version_tag }}
         qpdfsharp_interop_changed: ${{ steps.version-qpdfsharp-interop.outputs.changed }}
+        qpdfsharp_interop_version: ${{ steps.version-qpdfsharp-interop.outputs.version }}
+        qpdfsharp_interop_version_tag: ${{ steps.version-qpdfsharp-interop.outputs.version_tag }}
       runs-on: ubuntu-latest
       steps:
         - name: Checkout Repository
@@ -90,6 +92,9 @@ jobs:
         - name: Publish NuGet Package
           run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp.Interop*.nupkg
 
+        - name: Tag QPdfSharp.Inteorp Release
+          run: git tag ${{ needs.build-test-version.outputs.qpdfsharp_interop_version_tag }} && git push origin ${{ needs.build-test-version.outputs.qpdfsharp_interop_version_tag }}
+
     create-gh-release:
       if: ${{ !failure() && !cancelled() && success('publish-qpdfsharp')  }}
       permissions:
@@ -116,4 +121,4 @@ jobs:
             bodyFile: "RELEASE_NOTES.md"
             commit: ${{ github.sha }}
             generateReleaseNotes: true
-            tag: v${{ needs.build-test-version.outputs.qpdfsharp_version }}
+            tag: ${{ needs.build-test-version.outputs.qpdfsharp_version_tag }}
