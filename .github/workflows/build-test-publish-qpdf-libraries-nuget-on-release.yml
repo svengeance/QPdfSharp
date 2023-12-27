@@ -109,18 +109,20 @@ jobs:
         - name: Download Nuggets
           uses: actions/download-artifact@v4
           with:
-            pattern: QPdfSharp.*.nupkg
+            name: |
+              QPdfSharp
+              QPdfSharp.Interop
 
         - name: Update Changelog with Release Notes
           run: cat RELEASE_NOTES.md CHANGELOG.md > temp && mv temp CHANGELOG.md
 
         - uses: ncipollo/release-action@v1
           with:
-            artifacts: "QPdfSharp.*.nupkg"
+            artifacts: "QPdfSharp,QPdfSharp.Interop"
             bodyFile: "RELEASE_NOTES.md"
             commit: ${{ github.sha }}
             generateReleaseNotes: true
-            tag: ${{ needs.build-test-version.outputs.qpdfsharp_version }}
+            tag: v${{ needs.build-test-version.outputs.qpdfsharp_version }}
 
         - name: Update Changelog with Release Notes
           uses: stefanzweifel/git-auto-commit-action@v5
