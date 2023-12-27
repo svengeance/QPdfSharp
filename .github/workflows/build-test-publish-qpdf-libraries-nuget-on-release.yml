@@ -112,8 +112,7 @@ jobs:
             pattern: QPdfSharp.*.nupkg
 
         - name: Update Changelog with Release Notes
-          run: |
-            cat RELEASE_NOTES.md CHANGELOG.md > CHANGELOG.md
+          run: cat RELEASE_NOTES.md CHANGELOG.md > temp && mv temp CHANGELOG.md
 
         - uses: ncipollo/release-action@v1
           with:
