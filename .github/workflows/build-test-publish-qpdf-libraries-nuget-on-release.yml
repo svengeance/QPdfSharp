@@ -117,7 +117,7 @@ jobs:
 
         - uses: ncipollo/release-action@v1
           with:
-            artifacts: "QPdfSharp,QPdfSharp.Interop"
+            artifacts: "QPdfSharp*"
             bodyFile: "RELEASE_NOTES.md"
             commit: ${{ github.sha }}
             generateReleaseNotes: true
@@ -127,3 +127,4 @@ jobs:
           uses: stefanzweifel/git-auto-commit-action@v5
           with:
             commit_message: "Update CHANGELOG.md with Release Notes"
+            file_pattern: "*.md"
