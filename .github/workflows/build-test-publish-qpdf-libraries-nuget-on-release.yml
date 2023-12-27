@@ -63,7 +63,7 @@ jobs:
             path: ${{ github.workspace }}/artifacts/QPdfSharp.Interop*.nupkg
 
     publish-qpdfsharp:
-      if: needs.build-test-version.outputs.qpdfsharp_changed
+      if: needs.build-test-version.outputs.qpdfsharp_changed == 'true'
       name: Publish QPdfSharp
       needs: build-test-version
       runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
           run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp*.nupkg
 
     publish-qpdfsharp-interop:
-      if: needs.build-test-version.outputs.qpdfsharp_interop_changed
+      if: needs.build-test-version.outputs.qpdfsharp_interop_changed == 'true'
       name: Publish QPdfSharp.Interop
       needs: build-test-version
       runs-on: ubuntu-latest
