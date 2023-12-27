@@ -109,9 +109,8 @@ jobs:
         - name: Download Nuggets
           uses: actions/download-artifact@v4
           with:
-            name: |
-              QPdfSharp
-              QPdfSharp.Interop
+            pattern: QPdfSharp*
+            merge-multiple: true
 
         - name: Update Changelog with Release Notes
           run: cat RELEASE_NOTES.md CHANGELOG.md > temp && mv temp CHANGELOG.md
