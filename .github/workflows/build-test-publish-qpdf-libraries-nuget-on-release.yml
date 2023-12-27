@@ -95,7 +95,7 @@ jobs:
       permissions:
         contents: write
       name: Create GitHub Release
-      needs: [publish-qpdfsharp]
+      needs: [publish-qpdfsharp, build-test-version]
       runs-on: ubuntu-latest
       steps:
         - name: Checkout Changelog
@@ -120,7 +120,7 @@ jobs:
             bodyFile: "RELEASE_NOTES.md"
             commit: ${{ github.sha }}
             generateReleaseNotes: true
-            tag: ${{ steps.version-qpdfsharp.outputs.version }}
+            tag: ${{ needs.build-test-version.outputs.qpdfsharp_version }}
 
         - name: Update Changelog with Release Notes
           uses: stefanzweifel/git-auto-commit-action@v5
