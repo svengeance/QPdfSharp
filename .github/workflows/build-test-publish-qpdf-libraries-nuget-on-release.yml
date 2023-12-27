@@ -53,8 +53,14 @@ jobs:
         - name: Upload QPdfSharp Nuggets
           uses: actions/upload-artifact@v4
           with:
-            name: QPdfSharp NuGet
-            path: ${{ github.workspace }}/artifacts/QPdfSharp*.nupkg
+            name: QPdfSharp
+            path: ${{ github.workspace }}/artifacts/QPdfSharp.[0-9]*.nupkg
+
+        - name: Upload QPdfSharp.Interop Nuggets
+          uses: actions/upload-artifact@v4
+          with:
+            name: QPdfSharp.Interop
+            path: ${{ github.workspace }}/artifacts/QPdfSharp.Interop*.nupkg
 
     publish-qpdfsharp:
       if: needs.build-test-version.outputs.qpdfsharp_changed
@@ -65,7 +71,7 @@ jobs:
         - name: Download QPdfSharp Nuggets
           uses: actions/download-artifact@v4
           with:
-            pattern: QPdfSharp.[0-9].*.nupkg
+            name: QPdfSharp
 
         - name: Publish NuGet Package
           run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp*.nupkg
@@ -79,7 +85,7 @@ jobs:
         - name: Download QPdfSharp Nuggets
           uses: actions/download-artifact@v4
           with:
-            pattern: QPdfSharp.Interop*.nupkg
+            name: QPdfSharp.Interop
 
         - name: Publish NuGet Package
           run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp.Interop*.nupkg
