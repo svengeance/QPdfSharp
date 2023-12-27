@@ -84,6 +84,11 @@ jobs:
       needs: build-test-version
       runs-on: ubuntu-latest
       steps:
+        - name: Checkout Repo
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: .
+
         - name: Download QPdfSharp.Interop  Nuggets
           uses: actions/download-artifact@v4
           with:
@@ -92,7 +97,7 @@ jobs:
         - name: Publish NuGet Package
           run: dotnet nuget push -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json ${GITHUB_WORKSPACE}/QPdfSharp.Interop*.nupkg
 
-        - name: Tag QPdfSharp.Inteorp Release
+        - name: Tag QPdfSharp.Interop Release
           run: git tag ${{ needs.build-test-version.outputs.qpdfsharp_interop_version_tag }} && git push origin ${{ needs.build-test-version.outputs.qpdfsharp_interop_version_tag }}
 
     create-gh-release:
