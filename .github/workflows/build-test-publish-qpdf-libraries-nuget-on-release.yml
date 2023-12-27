@@ -101,9 +101,7 @@ jobs:
         - name: Checkout Changelog
           uses: actions/checkout@v4
           with:
-            sparse-checkout: |
-              RELEASE_NOTES.md
-              CHANGELOG.md
+            sparse-checkout: RELEASE_NOTES.md
             sparse-checkout-cone-mode: false
 
         - name: Download Nuggets
@@ -112,9 +110,6 @@ jobs:
             pattern: QPdfSharp*
             merge-multiple: true
 
-        - name: Update Changelog with Release Notes
-          run: cat RELEASE_NOTES.md CHANGELOG.md > temp && mv temp CHANGELOG.md
-
         - uses: ncipollo/release-action@v1
           with:
             artifacts: "QPdfSharp*"
@@ -122,9 +117,3 @@ jobs:
             commit: ${{ github.sha }}
             generateReleaseNotes: true
             tag: v${{ needs.build-test-version.outputs.qpdfsharp_version }}
-
-        - name: Update Changelog with Release Notes
-          uses: stefanzweifel/git-auto-commit-action@v5
-          with:
-            commit_message: "Update CHANGELOG.md with Release Notes"
-            file_pattern: "*.md"
