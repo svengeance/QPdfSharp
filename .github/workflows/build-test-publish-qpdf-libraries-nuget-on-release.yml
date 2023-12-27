@@ -82,6 +82,8 @@ jobs:
       if: needs.build-test-version.outputs.qpdfsharp_interop_changed == 'true'
       name: Publish QPdfSharp.Interop
       needs: build-test-version
+      permissions:
+        contents: write
       runs-on: ubuntu-latest
       steps:
         - name: Checkout Repo
