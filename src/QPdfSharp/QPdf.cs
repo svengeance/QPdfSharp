@@ -1,6 +1,6 @@
 ﻿// Copyright © Stephen (Sven) Vernyi and Contributors. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
-using System.Text;
+using QPdfSharp.Extensions;
 using QPdfSharp.Interop;
 
 namespace QPdfSharp;
@@ -15,9 +15,9 @@ public unsafe class QPdf: IDisposable
 
     public QPdf(string filePath, string password = "")
     {
-        fixed (byte* filePathBytes = Encoding.UTF8.GetBytes(filePath))
-        fixed (byte* passwordBytes = Encoding.UTF8.GetBytes(password))
-            CheckError(QPdfInterop.qpdf_read(_qPdfData, (sbyte*)filePathBytes, (sbyte*)passwordBytes));
+        fixed (sbyte* filePathBytes = filePath.ToSByte())
+        fixed (sbyte* passwordBytes = password.ToSByte())
+            CheckError(QPdfInterop.qpdf_read(_qPdfData, filePathBytes, passwordBytes));
     }
 
     public QPdf(ReadOnlyMemory<byte> bytes, string name = "in-memory pdf", string password = "")
@@ -27,9 +27,9 @@ public unsafe class QPdf: IDisposable
 
         using var fileBytesHandle = bytes.Pin();
 
-        fixed (byte* fileNameBytes = Encoding.UTF8.GetBytes(name))
-        fixed (byte* passwordBytes = Encoding.UTF8.GetBytes(password))
-            CheckError(QPdfInterop.qpdf_read_memory(_qPdfData, (sbyte*)fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, (sbyte*)passwordBytes));
+        fixed (sbyte* fileNameBytes = name.ToSByte())
+        fixed (sbyte* passwordBytes = password.ToSByte())
+            CheckError(QPdfInterop.qpdf_read_memory(_qPdfData, fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, passwordBytes));
     }
 
     public int GetPageCount()
@@ -42,8 +42,8 @@ public unsafe class QPdf: IDisposable
 
     public void WriteFile(string outputFilePath)
     {
-        fixed (byte* outputFilePathBytes = Encoding.UTF8.GetBytes(outputFilePath))
-            CheckError(QPdfInterop.qpdf_init_write(_qPdfData, (sbyte*)outputFilePathBytes));
+        fixed (sbyte* outputFilePathBytes = outputFilePath.ToSByte())
+            CheckError(QPdfInterop.qpdf_init_write(_qPdfData, outputFilePathBytes));
 
         CheckError(QPdfInterop.qpdf_write(_qPdfData));
     }
