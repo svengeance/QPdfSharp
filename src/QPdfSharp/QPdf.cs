@@ -9,8 +9,7 @@ public unsafe partial class QPdf: IDisposable
 {
     public static readonly string Version = new(QPdfInterop.qpdf_get_qpdf_version());
 
-    internal readonly QPdfData* _qPdfData = QPdfInterop.qpdf_init();
-
+    private readonly QPdfData* _qPdfData = QPdfInterop.qpdf_init();
     private QPdfStream? _outputStream;
     private bool _hasWrittenData;
 
