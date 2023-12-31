@@ -11,8 +11,17 @@ See the below excerpt for a summary on QPDF: for further details, [consult the q
 ## Status
 This project is in its infancy. While early versions may be published, the library should **not** be considered stable until version 1.0.0 is released.
 
+## Roadmap
+
+- **v1**: Fully implement QPdf object handling.
+- **v2**: Implement QPdf job handling.
+- **>v2**: Maintenance, compatibility, optimizations. This library should sufficiently wrap QPdf.
+
 ## Installation
-< Installation Instructions Pending >
+QPdfSharp is available [as a NuGet package](https://www.nuget.org/packages/QPdfSharp/). Installing QPdfSharp will include the necessary libraries for your platform.
+
+Via CLI:
+`dotnet add package QPdfSharp`
 
 ## Usage
 QPdfSharp aims to facilitate usage of the underlying QPDF library by providing a simple, easy-to-use API that is familiar to .NET developers.
