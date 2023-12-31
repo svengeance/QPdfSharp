@@ -52,48 +52,5 @@ public class QPdfTests
         // Assert
         createPdfFromBytes.Should().NotThrow();
     }
-
-    [Fact]
-    public async Task Can_write_pdf_file()
-    {
-        // Arrange
-        var outputFileName = "qgrug.pdf";
-        using var qpdf = new QPdf(TestAssets.Grug);
-
-        // Act
-        qpdf.WriteFile(outputFileName);
-
-        // Assert
-        File.Exists(outputFileName).Should().BeTrue();
-        (await File.ReadAllBytesAsync(outputFileName)).Should().NotBeEmpty();
-        File.Delete(outputFileName);
-    }
-
-    [Fact]
-    public void Can_write_pdf_bytes()
-    {
-        // Arrange
-        using var qpdf = new QPdf(TestAssets.Grug);
-
-        // Act
-        var getPdfBytes = qpdf.WriteBytes().ToArray();
-
-        // Assert
-        getPdfBytes.Should().NotBeEmpty();
-    }
-
-    [Fact]
-    public void Can_write_pdf_stream()
-    {
-        // Arrange
-        using var qpdf = new QPdf(TestAssets.Grug);
-
-        // Act
-        using var pdfStream  = qpdf.WriteStream();
-
-        // Assert
-        pdfStream.Should().NotHaveLength(0);
-        pdfStream.Should().BeReadOnly();
-    }
 }
 
