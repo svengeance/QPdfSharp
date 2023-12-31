@@ -5,11 +5,14 @@ using QPdfSharp.Interop;
 
 namespace QPdfSharp;
 
-public unsafe class QPdf: IDisposable
+public unsafe partial class QPdf: IDisposable
 {
     public static readonly string Version = new(QPdfInterop.qpdf_get_qpdf_version());
 
-    private readonly QPdfData* _qPdfData = QPdfInterop.qpdf_init();
+    internal readonly QPdfData* _qPdfData = QPdfInterop.qpdf_init();
+
+    private QPdfStream? _outputStream;
+    private bool _hasWrittenData;
 
     ~QPdf() => ReleaseUnmanagedResources();
 
@@ -40,40 +43,11 @@ public unsafe class QPdf: IDisposable
         return pageCount;
     }
 
-    public void WriteFile(string outputFilePath)
-    {
-        fixed (sbyte* outputFilePathBytes = outputFilePath.ToSByte())
-            CheckError(QPdfInterop.qpdf_init_write(_qPdfData, outputFilePathBytes));
-
-        CheckError(QPdfInterop.qpdf_write(_qPdfData));
-    }
-
-    public ReadOnlySpan<byte> WriteBytes()
-    {
-        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
-        CheckError(QPdfInterop.qpdf_write(_qPdfData));
-
-        var buffer = QPdfInterop.qpdf_get_buffer(_qPdfData);
-        var bufferLength = QPdfInterop.qpdf_get_buffer_length(_qPdfData);
-        CheckError();
-
-        return new ReadOnlySpan<byte>(buffer, (int)bufferLength);
-    }
-
-    public Stream WriteStream()
-    {
-        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
-        CheckError(QPdfInterop.qpdf_write(_qPdfData));
-
-        var buffer = QPdfInterop.qpdf_get_buffer(_qPdfData);
-        var bufferLength = QPdfInterop.qpdf_get_buffer_length(_qPdfData);
-        CheckError();
-
-        return new UnmanagedMemoryStream(buffer, (long)bufferLength);
-    }
-
     public void Dispose()
     {
+        if (_outputStream is { IsDisposed: false })
+            throw new InvalidOperationException($"Attempted to dispose of QPdf while the output stream is still in use. Please dispose of all resources before disposing of the QPdf instance.");
+
         ReleaseUnmanagedResources();
         GC.SuppressFinalize(this);
     }

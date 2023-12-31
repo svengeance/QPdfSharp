@@ -89,7 +89,7 @@ public class QPdfTests
         using var qpdf = new QPdf(TestAssets.Grug);
 
         // Act
-        var pdfStream  = qpdf.WriteStream();
+        using var pdfStream  = qpdf.WriteStream();
 
         // Assert
         pdfStream.Should().NotHaveLength(0);

@@ -1,7 +1,10 @@
-# 0.0.1
+### Breaking Changes
+- Ensures PDF objects can only be written once
+  - Attempting to do so more than once will throw an exception
+- Prevents usage of a Stream returned from QPdf after the QPdf instance has been disposed
 
-Initial push of library with the following features:
+### Features
+- Allows passing in a QPdfWriteOptions instance to set various PDF properties
 
-- Read PDFs from memory or file
-- Retrieve page count
-- Write PDF to memory or file
+### Adjustments
+- Improves interop code
