@@ -8,10 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QPdfSharp.Interop\QPdfSharp.Interop.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="QPdfSharp.Interop" Version="0.0.1" />
     <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
 
