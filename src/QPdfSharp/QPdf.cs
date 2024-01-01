@@ -34,14 +34,6 @@ public unsafe partial class QPdf: IDisposable
             CheckError(QPdfInterop.qpdf_read_memory(_qPdfData, fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, passwordBytes));
     }
 
-    public int GetPageCount()
-    {
-        var pageCount = QPdfInterop.qpdf_get_num_pages(_qPdfData);
-        CheckError();
-
-        return pageCount;
-    }
-
     public void Dispose()
     {
         if (_outputStream is { IsDisposed: false })
