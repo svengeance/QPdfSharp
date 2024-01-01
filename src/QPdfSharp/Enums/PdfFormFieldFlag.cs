@@ -14,7 +14,7 @@ public enum PdfFormFieldFlag : uint
     TextFileSelect = 1 << 20,
     TextDoNotSpellCheck = 1 << 22,
     TextDoNotScroll = 1 << 23,
-    TextComb = 1 << 24,
+    TextCombo = 1 << 24,
     TextRichText = 1 << 25,
     ChooseCombo = 1 << 17,
     ChooseEdit = 1 << 18,

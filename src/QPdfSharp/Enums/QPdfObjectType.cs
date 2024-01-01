@@ -14,7 +14,7 @@ public enum QPdfObjectType : uint
     Dictionary,
     Stream,
     Operator,
-    Inlineimage,
+    InlineImage,
     Unresolved,
     Destroyed,
 }
