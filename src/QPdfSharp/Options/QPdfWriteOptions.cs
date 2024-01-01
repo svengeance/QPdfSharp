@@ -4,21 +4,22 @@ using QPdfSharp.Enums;
 
 namespace QPdfSharp.Options;
 
-public sealed record QPdfWriteOptions(
-    bool? CompressStreams,
-    int? ForcePdfExtensionLevel,
-    string? ForcePdfVersion,
-    bool? Linearize,
-    int? MinimumPdfExtensionLevel,
-    bool? NewlineBeforeEndOfStream,
-    string? MinimumPdfVersion,
-    bool? NormalizeContent,
-    bool? PreserveEncryption,
-    bool? PreserveUnreferencedObjects,
-    QPdfObjectStream? QPdfObjectStreamMode,
-    QPdfStreamData? QPdfStreamDataMode,
-    QPdfStreamDecodeLevel? QPdfStreamDecodeLevel,
-    bool? SuppressOriginalObjectIds,
-    bool? UseDeterministicIdGeneration,
-    bool? WriteAsQdf
-);
+public sealed class QPdfWriteOptions
+{
+    public bool? CompressStreams { get; set; }
+    public int? ForcePdfExtensionLevel { get; set; }
+    public string? ForcePdfVersion { get; set; }
+    public bool? Linearize { get; set; }
+    public int? MinimumPdfExtensionLevel { get; set; }
+    public bool? NewlineBeforeEndOfStream { get; set; }
+    public string? MinimumPdfVersion { get; set; }
+    public bool? NormalizeContent { get; set; }
+    public bool? PreserveEncryption { get; set; }
+    public bool? PreserveUnreferencedObjects { get; set; }
+    public QPdfObjectStream? QPdfObjectStreamMode { get; set; }
+    public QPdfStreamData? QPdfStreamDataMode { get; set; }
+    public QPdfStreamDecodeLevel? QPdfStreamDecodeLevel { get; set; }
+    public bool? SuppressOriginalObjectIds { get; set; }
+    public bool? UseDeterministicIdGeneration { get; set; }
+    public bool? WriteAsQdf { get; set; }
+}
