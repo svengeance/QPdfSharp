@@ -8,11 +8,11 @@ public readonly struct QPdfPage
 {
     internal readonly unsafe QPdfData* _qPdfData;
 
-    internal readonly uint _qPdfPage;
+    internal readonly uint _qPdfPageData;
 
-    internal unsafe QPdfPage(QPdfData* qPdfData, uint qPdfPage)
+    internal unsafe QPdfPage(QPdfData* qPdfData, uint qPdfPageData)
     {
         _qPdfData = qPdfData;
-        _qPdfPage = qPdfPage;
+        _qPdfPageData = qPdfPageData;
     }
 }

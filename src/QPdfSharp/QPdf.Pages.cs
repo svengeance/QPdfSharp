@@ -23,25 +23,11 @@ public unsafe partial class QPdf
         return new QPdfPage(_qPdfData, pagePtr);
     }
 
-    public QPdfPage GetPageById(int id, int generation)
-    {
-        var pageIndex = QPdfInterop.qpdf_find_page_by_id(_qPdfData, id, generation);
-        CheckError();
-
-        return GetPage(pageIndex);
-    }
-
     public void AppendPage(QPdfPage newPage)
-    {
-        QPdfInterop.qpdf_add_page(_qPdfData, newPage._qPdfData, newPage._qPdfPage, first: 0);
-        CheckError();
-    }
+        => CheckError(QPdfInterop.qpdf_add_page(_qPdfData, newPage._qPdfData, newPage._qPdfPageData, first: 0));
 
     public void PrependPage(QPdfPage newPage)
-    {
-        QPdfInterop.qpdf_add_page(_qPdfData, newPage._qPdfData, newPage._qPdfPage, first: 1);
-        CheckError();
-    }
+        => CheckError(QPdfInterop.qpdf_add_page(_qPdfData, newPage._qPdfData, newPage._qPdfPageData, first: 1));
 
     public void InsertPage(QPdfPage newPage, int insertAt, bool insertBefore = true)
     {
@@ -54,20 +40,11 @@ public unsafe partial class QPdf
     }
 
     public void InsertPage(QPdfPage newPage, QPdfPage targetPage, bool insertBefore = true)
-    {
-        QPdfInterop.qpdf_add_page_at(_qPdfData, newPage._qPdfData, newPage._qPdfPage, before: insertBefore.ToQPdfBool(), targetPage._qPdfPage);
-        CheckError();
-    }
+        => CheckError(QPdfInterop.qpdf_add_page_at(_qPdfData, newPage._qPdfData, newPage._qPdfPageData, before: insertBefore.ToQPdfBool(), targetPage._qPdfPageData));
 
     public void RemovePage(int pageNumber)
-    {
-        var page = GetPage(pageNumber);
-        RemovePage(page);
-    }
+        => RemovePage(GetPage(pageNumber));
 
     public void RemovePage(QPdfPage page)
-    {
-        QPdfInterop.qpdf_remove_page(_qPdfData, page._qPdfPage);
-        CheckError();
-    }
+        => CheckError(QPdfInterop.qpdf_remove_page(_qPdfData, page._qPdfPageData));
 }
