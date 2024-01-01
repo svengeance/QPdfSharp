@@ -2,6 +2,7 @@
 
 using QPdfSharp.Extensions;
 using QPdfSharp.Interop;
+using QPdfSharp.Options;
 
 namespace QPdfSharp;
 
@@ -15,17 +16,21 @@ public unsafe partial class QPdf: IDisposable
 
     ~QPdf() => ReleaseUnmanagedResources();
 
-    public QPdf(string filePath, string password = "")
+    public QPdf(string filePath, string password = "", QPdfReadOptions? readOptions = null)
     {
+        ApplyReadOptions(readOptions);
+
         fixed (sbyte* filePathBytes = filePath.ToSByte())
         fixed (sbyte* passwordBytes = password.ToSByte())
             CheckError(QPdfInterop.qpdf_read(_qPdfData, filePathBytes, passwordBytes));
     }
 
-    public QPdf(ReadOnlyMemory<byte> bytes, string name = "in-memory pdf", string password = "")
+    public QPdf(ReadOnlyMemory<byte> bytes, string name = "in-memory pdf", string password = "", QPdfReadOptions? readOptions = null)
     {
         if (string.IsNullOrEmpty(name))
             throw new ArgumentException("Must give a non-null non-empty name for an in-memory PDF.", nameof(name));
+
+        ApplyReadOptions(readOptions);
 
         using var fileBytesHandle = bytes.Pin();
 
@@ -60,5 +65,17 @@ public unsafe partial class QPdf: IDisposable
     {
         fixed (QPdfData** pdf = &_qPdfData)
             QPdfInterop.qpdf_cleanup(pdf);
+    }
+
+    private void ApplyReadOptions(QPdfReadOptions? options)
+    {
+        if (options is null)
+            return;
+
+        if (options.AttemptRecovery is { } attemptRecoveryValue)
+            QPdfInterop.qpdf_set_attempt_recovery(_qPdfData, attemptRecoveryValue.ToQPdfBool());
+
+        if (options.IgnoreXrefStreams is { } ignoreXrefStreamsValue)
+            QPdfInterop.qpdf_set_ignore_xref_streams(_qPdfData, ignoreXrefStreamsValue.ToQPdfBool());
     }
 }
