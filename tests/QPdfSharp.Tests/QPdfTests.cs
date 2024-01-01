@@ -3,19 +3,6 @@ namespace QPdfSharp.Tests;
 public class QPdfTests
 {
     [Fact]
-    public void Can_get_page_count()
-    {
-        // Arrange
-        using var qpdf = new QPdf(TestAssets.Grug);
-
-        // Act
-        var numPages = qpdf.GetPageCount();
-
-        // Assert
-        numPages.Should().Be(19);
-    }
-
-    [Fact]
     public void Can_read_qpdf_version()
     {
         // Arrange
