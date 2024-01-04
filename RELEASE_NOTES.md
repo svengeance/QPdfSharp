@@ -1,5 +1,2 @@
-### Breaking Changes
--  Adjusts a few enum names
-
 ### Features
-- Provides operations for adding or removing pages in a PDF document.
+- Adds read/write/update operations from JSON files created by QPDF.

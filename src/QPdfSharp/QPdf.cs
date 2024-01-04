@@ -22,7 +22,13 @@ public unsafe partial class QPdf: IDisposable
 
         fixed (sbyte* filePathBytes = filePath.ToSByte())
         fixed (sbyte* passwordBytes = password.ToSByte())
-            CheckError(QPdfInterop.qpdf_read(_qPdfData, filePathBytes, passwordBytes));
+        {
+            var qpdReadResult = readOptions?.IsJsonFormat == true
+                ? QPdfInterop.qpdf_create_from_json_file(_qPdfData, filePathBytes)
+                : QPdfInterop.qpdf_read(_qPdfData, filePathBytes, passwordBytes);
+
+            CheckError(qpdReadResult);
+        }
     }
 
     public QPdf(ReadOnlyMemory<byte> bytes, string name = "in-memory pdf", string password = "", QPdfReadOptions? readOptions = null)
@@ -36,7 +42,13 @@ public unsafe partial class QPdf: IDisposable
 
         fixed (sbyte* fileNameBytes = name.ToSByte())
         fixed (sbyte* passwordBytes = password.ToSByte())
-            CheckError(QPdfInterop.qpdf_read_memory(_qPdfData, fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, passwordBytes));
+        {
+            var qpdReadResult = readOptions?.IsJsonFormat == true
+                ? QPdfInterop.qpdf_create_from_json_data(_qPdfData, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length)
+                : QPdfInterop.qpdf_read_memory(_qPdfData, fileNameBytes, (sbyte*)fileBytesHandle.Pointer, (ulong)bytes.Length, passwordBytes);
+
+            CheckError(qpdReadResult);
+        }
     }
 
     public void Dispose()

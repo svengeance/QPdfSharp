@@ -1,3 +1,5 @@
+using QPdfSharp.Options;
+
 namespace QPdfSharp.Tests;
 
 public class QPdfTests
@@ -13,28 +15,32 @@ public class QPdfTests
         Version.TryParse(version, out _).Should().BeTrue();
     }
 
-    [Fact]
-    public void Can_read_pdf_from_file_path()
+    [Theory]
+    [InlineData(TestAssets.Grug)]
+    [InlineData(TestAssets.GrugJson)]
+    public void Can_read_pdf_from_file_path(string filePath)
     {
         // Arrange
-        var fileName = TestAssets.Grug;
+        var readOptions = new QPdfReadOptions { IsJsonFormat = filePath.EndsWith(".json") };
 
         // Act
-        var createPdfFromFile = () => new QPdf(fileName);
+        var createPdfFromFile = () => new QPdf(filePath, readOptions: readOptions);
 
         // Assert
         createPdfFromFile.Should().NotThrow();
     }
 
-    [Fact]
-    public async Task Can_read_pdf_from_memory()
+    [Theory]
+    [InlineData(TestAssets.Grug)]
+    [InlineData(TestAssets.GrugJson)]
+    public async Task Can_read_pdf_from_memory(string filePath)
     {
         // Arrange
-        var fileName = TestAssets.Grug;
-        var fileBytes = await File.ReadAllBytesAsync(fileName);
+        var readOptions = new QPdfReadOptions { IsJsonFormat = filePath.EndsWith(".json") };
+        var fileBytes = await File.ReadAllBytesAsync(filePath);
 
         // Act
-        var createPdfFromBytes = () => new QPdf(fileBytes);
+        var createPdfFromBytes = () => new QPdf(fileBytes, readOptions: readOptions);
 
         // Assert
         createPdfFromBytes.Should().NotThrow();

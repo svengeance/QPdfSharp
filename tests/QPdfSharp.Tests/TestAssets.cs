@@ -4,5 +4,6 @@ namespace QPdfSharp.Tests;
 
 public static class TestAssets
 {
-    public static string Grug = "Assets/grug.pdf";
+    public const string Grug = "Assets/grug.pdf";
+    public const string GrugJson = "Assets/grug.json";
 }

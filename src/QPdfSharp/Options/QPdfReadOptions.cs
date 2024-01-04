@@ -4,6 +4,8 @@ namespace QPdfSharp.Options;
 
 public sealed class QPdfReadOptions
 {
-    public bool AttemptRecovery { get; set; }
-    public bool IgnoreXrefStreams { get; set; }
+    public bool? AttemptRecovery { get; set; }
+    public bool? IgnoreXrefStreams { get; set; }
+
+    public bool IsJsonFormat { get; set; }
 }

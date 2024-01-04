@@ -1,5 +1,8 @@
 ﻿// Copyright © Stephen (Sven) Vernyi and Contributors. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
 using QPdfSharp.Extensions;
 using QPdfSharp.Interop;
 using QPdfSharp.Options;
@@ -47,6 +50,82 @@ public unsafe partial class QPdf
         CheckError();
 
         return _outputStream = new QPdfStream(buffer, (long)bufferLength);
+    }
+
+    public string WriteJson(QPdfWriteOptions? writeOptions = null, string[]? wantedObjects = null)
+    {
+        var sb = new StringBuilder();
+
+        QPdfWriteFunction writeJson = (data, len, _) => {
+            sb.Append(new string(data, 0, (int)len));
+            return 0;
+        };
+
+        WriteJson(writeJson, writeOptions, wantedObjects);
+
+        return sb.ToString();
+    }
+
+    public void WriteJsonFile(string outputFilePath, QPdfWriteOptions? writeOptions = null, string[]? wantedObjects = null)
+    {
+        using var fs = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
+
+        QPdfWriteFunction writeJson = (data, len, _) => {
+            using var ums = new UnmanagedMemoryStream((byte*)data, (int)len);
+            ums.CopyTo(fs);
+            ums.Flush();
+            return 0;
+        };
+
+        WriteJson(writeJson, writeOptions, wantedObjects);
+    }
+
+    private void WriteJson(QPdfWriteFunction writeFunction, QPdfWriteOptions? writeOptions = null, string[]? wantedObjects = null)
+    {
+        MarkDataWritten();
+        ApplyWriteOptions(writeOptions);
+
+        var wantedObjectsBytes = (wantedObjects ?? [""]).Select(s => Unsafe.As<sbyte[]>(Encoding.UTF8.GetBytes(s))).ToArray();
+        var wantedObjectsPins = wantedObjectsBytes.Select(s => GCHandle.Alloc(s, GCHandleType.Pinned)).ToArray();
+        var wantedObjectsPtrs = Unsafe.As<sbyte*[]>(wantedObjectsPins.Select(s => s.AddrOfPinnedObject()).ToArray());
+
+        fixed (sbyte** wantedObjectsRootPtr = &wantedObjectsPtrs[0])
+        fixed (sbyte* filePrefix = "in-memory".ToSByte())
+        {
+            try
+            {
+                CheckError(
+                    QPdfInterop.qpdf_write_json(
+                        qpdf: _qPdfData,
+                        version: 2,
+                        fn: writeFunction,
+                        udata: (void*)IntPtr.Zero,
+                        decode_level: QPdfStreamDecodeLevel.qpdf_dl_all,
+                        json_stream_data: QPdfJsonStreamData.qpdf_sj_inline,
+                        file_prefix: filePrefix,
+                        wanted_objects: wantedObjectsRootPtr
+                    )
+                );
+            }
+            finally
+            {
+                foreach (var pin in wantedObjectsPins)
+                    pin.Free();
+            }
+        }
+    }
+
+    public void UpdateFromJsonFile(string filePath)
+    {
+        fixed (sbyte* filePathBytes = filePath.ToSByte())
+            CheckError(QPdfInterop.qpdf_update_from_json_file(_qPdfData, filePathBytes));
+    }
+
+    public void UpdateFromJson(string json)
+    {
+        var jsonSpan = json.ToSByte();
+        fixed (sbyte* jsonBytes = jsonSpan)
+            CheckError(QPdfInterop.qpdf_update_from_json_data(_qPdfData, jsonBytes, (ulong)jsonSpan.Length));
     }
 
     private void ApplyWriteOptions(QPdfWriteOptions? writeOptions)
