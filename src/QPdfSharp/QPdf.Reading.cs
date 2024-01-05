@@ -10,6 +10,21 @@ public unsafe partial class QPdf: IDisposable
 {
     public static readonly string Version = new(QPdfInterop.qpdf_get_qpdf_version());
 
+    public string PdfVersion => new(QPdfInterop.qpdf_get_pdf_version(_qPdfData));
+    public int PdfExtensionLevel => QPdfInterop.qpdf_get_pdf_extension_level(_qPdfData);
+    public bool IsEncrypted => QPdfInterop.qpdf_is_encrypted(_qPdfData) == 1;
+    public bool IsLinearized => QPdfInterop.qpdf_is_linearized(_qPdfData) == 1;
+    public bool AllowAccessibility => QPdfInterop.qpdf_allow_accessibility(_qPdfData) == 1;
+    public bool AllowExtractAll => QPdfInterop.qpdf_allow_extract_all(_qPdfData) == 1;
+    public bool AllowPrintLowRes => QPdfInterop.qpdf_allow_print_low_res(_qPdfData) == 1;
+    public bool AllowPrintHighRes => QPdfInterop.qpdf_allow_print_high_res(_qPdfData) == 1;
+    public bool AllowModifyAssembly => QPdfInterop.qpdf_allow_modify_assembly(_qPdfData) == 1;
+    public bool AllowModifyForm => QPdfInterop.qpdf_allow_modify_form(_qPdfData) == 1;
+    public bool AllowModifyAnnotation => QPdfInterop.qpdf_allow_modify_annotation(_qPdfData) == 1;
+    public bool AllowModifyOther => QPdfInterop.qpdf_allow_modify_other(_qPdfData) == 1;
+    public bool AllowModifyAll => QPdfInterop.qpdf_allow_modify_all(_qPdfData) == 1;
+    public string Password => new(QPdfInterop.qpdf_get_user_password(_qPdfData));
+
     private readonly QPdfData* _qPdfData = QPdfInterop.qpdf_init();
     private QPdfStream? _outputStream;
     private bool _hasWrittenData;
@@ -18,7 +33,7 @@ public unsafe partial class QPdf: IDisposable
 
     public QPdf(string filePath, string password = "", QPdfReadOptions? readOptions = null)
     {
-        ApplyReadOptions(readOptions);
+        InitializeQPdf(readOptions);
 
         fixed (sbyte* filePathBytes = filePath.ToSByte())
         fixed (sbyte* passwordBytes = password.ToSByte())
@@ -36,7 +51,7 @@ public unsafe partial class QPdf: IDisposable
         if (string.IsNullOrEmpty(name))
             throw new ArgumentException("Must give a non-null non-empty name for an in-memory PDF.", nameof(name));
 
-        ApplyReadOptions(readOptions);
+        InitializeQPdf(readOptions);
 
         using var fileBytesHandle = bytes.Pin();
 
@@ -79,8 +94,10 @@ public unsafe partial class QPdf: IDisposable
             QPdfInterop.qpdf_cleanup(pdf);
     }
 
-    private void ApplyReadOptions(QPdfReadOptions? options)
+    private void InitializeQPdf(QPdfReadOptions? options)
     {
+        QPdfInterop.qpdf_silence_errors(_qPdfData);
+
         if (options is null)
             return;
 
