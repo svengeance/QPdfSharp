@@ -99,7 +99,7 @@ public unsafe partial class QPdf
                         qpdf: _qPdfData,
                         version: 2,
                         fn: writeFunction,
-                        udata: (void*)IntPtr.Zero,
+                        udata: null,
                         decode_level: QPdfStreamDecodeLevel.qpdf_dl_all,
                         json_stream_data: QPdfJsonStreamData.qpdf_sj_inline,
                         file_prefix: filePrefix,
