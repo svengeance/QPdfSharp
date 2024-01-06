@@ -6,4 +6,5 @@ public static class TestAssets
 {
     public const string Grug = "Assets/grug.pdf";
     public const string GrugJson = "Assets/grug.json";
+    public const string QPdfWatermark = "Assets/watermark.pdf";
 }
