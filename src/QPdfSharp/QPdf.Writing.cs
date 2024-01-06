@@ -13,21 +13,22 @@ public unsafe partial class QPdf
 {
     public void WriteFile(string outputFilePath, QPdfWriteOptions? writeOptions = null)
     {
-        MarkDataWritten();
-        ApplyWriteOptions(writeOptions);
-
         fixed (sbyte* outputFilePathBytes = outputFilePath.ToSByte())
             CheckError(QPdfInterop.qpdf_init_write(_qPdfData, outputFilePathBytes));
+
+        MarkDataWritten();
+        ApplyWriteOptions(writeOptions);
 
         CheckError(QPdfInterop.qpdf_write(_qPdfData));
     }
 
     public ReadOnlySpan<byte> WriteBytes(QPdfWriteOptions? writeOptions = null)
     {
+        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
+
         MarkDataWritten();
         ApplyWriteOptions(writeOptions);
 
-        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
         CheckError(QPdfInterop.qpdf_write(_qPdfData));
 
         var buffer = QPdfInterop.qpdf_get_buffer(_qPdfData);
@@ -39,10 +40,11 @@ public unsafe partial class QPdf
 
     public Stream WriteStream(QPdfWriteOptions? writeOptions = null)
     {
+        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
+
         MarkDataWritten();
         ApplyWriteOptions(writeOptions);
 
-        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
         CheckError(QPdfInterop.qpdf_write(_qPdfData));
 
         var buffer = QPdfInterop.qpdf_get_buffer(_qPdfData);
@@ -82,6 +84,8 @@ public unsafe partial class QPdf
 
     private void WriteJson(QPdfWriteFunction writeFunction, QPdfWriteOptions? writeOptions = null, string[]? wantedObjects = null)
     {
+        CheckError(QPdfInterop.qpdf_init_write_memory(_qPdfData));
+
         MarkDataWritten();
         ApplyWriteOptions(writeOptions);
 
@@ -180,6 +184,8 @@ public unsafe partial class QPdf
             fixed (sbyte* minimumPdfVersionBytes = minimumPdfVersionValue.ToSByte())
                 QPdfInterop.qpdf_set_minimum_pdf_version_and_extension(_qPdfData, minimumPdfVersionBytes, writeOptions.MinimumPdfExtensionLevel ?? 0);
         }
+
+        CheckError();
     }
 
     private void MarkDataWritten()
