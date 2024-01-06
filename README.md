@@ -1,7 +1,7 @@
 ![QPdfSharp_DotNetBot.png](assets/QPdfSharp_DotNetBot.png)
 
 # QPdfSharp
-A C# wrapper written around QPdf to allow for easy PDF manipulation. Please read the usage notes below, and see the below excerpt for a summary on QPdf: for further details, [consult the qpdf repository](https://github.com/qpdf/qpdf/).
+A C# wrapper written around QPdf to allow for easy PDF manipulation that is tested for both linux and windows. Please read the usage notes below, and see the below excerpt for a summary on QPdf: for further details, [consult the qpdf repository](https://github.com/qpdf/qpdf/).
 
 > QPdf is a command-line tool and C++ library that performs content-preserving transformations on PDF files. It supports linearization, encryption, and numerous other features. It can also be used for splitting and merging files, creating PDF files (but you have to supply all the content yourself), and inspecting files for study or analysis. QPdf does not render PDFs or perform text extraction, and it does not contain higher-level interfaces for working with page contents. It is a low-level tool for working with the structure of PDF files and can be a valuable tool for anyone who wants to do programmatic or command-line-based manipulation of PDF files.
 >
@@ -67,6 +67,9 @@ using var qpdfStream = qpdf.WriteStream();
 var client = new HttpClient();
 await client.PostAsync("https://example.com", new StreamContent(qpdfStream));
 ```
+
+### Exception Handling
+Every call to the underlying library includes a check to see if an error was returned. Errors forwarded from QPdf are thrown as `QPdfExceptions`, while managed code will throw typical BCL exceptions as needed.
 
 ## Runtime Libraries
 QPdfSharp depends on the [QPdf.RuntimeLibraries](https://www.nuget.org/packages/QPdf.RuntimeLibraries) to distribute the appropriate QPdf binaries for your platform.
