@@ -1,21 +1,27 @@
 ![QPdfSharp_DotNetBot.png](assets/QPdfSharp_DotNetBot.png)
 
 # QPdfSharp
-A C# wrapper written around QPDF to allow for easy PDF manipulation.
-See the below excerpt for a summary on QPDF: for further details, [consult the qpdf repository](https://github.com/qpdf/qpdf/).
+A C# wrapper written around QPdf to allow for easy PDF manipulation. Please read the usage notes below, and see the below excerpt for a summary on QPdf: for further details, [consult the qpdf repository](https://github.com/qpdf/qpdf/).
 
-> QPDF is a command-line tool and C++ library that performs content-preserving transformations on PDF files. It supports linearization, encryption, and numerous other features. It can also be used for splitting and merging files, creating PDF files (but you have to supply all the content yourself), and inspecting files for study or analysis. QPDF does not render PDFs or perform text extraction, and it does not contain higher-level interfaces for working with page contents. It is a low-level tool for working with the structure of PDF files and can be a valuable tool for anyone who wants to do programmatic or command-line-based manipulation of PDF files.
+> QPdf is a command-line tool and C++ library that performs content-preserving transformations on PDF files. It supports linearization, encryption, and numerous other features. It can also be used for splitting and merging files, creating PDF files (but you have to supply all the content yourself), and inspecting files for study or analysis. QPdf does not render PDFs or perform text extraction, and it does not contain higher-level interfaces for working with page contents. It is a low-level tool for working with the structure of PDF files and can be a valuable tool for anyone who wants to do programmatic or command-line-based manipulation of PDF files.
 >
-> The QPDF Manual is hosted online at https://qpdf.readthedocs.io. The project website is https://qpdf.sourceforge.io. The source code repository is hosted at GitHub: https://github.com/qpdf/qpdf.
+> The QPdf Manual is hosted online at https://qpdf.readthedocs.io. The project website is https://qpdf.sourceforge.io. The source code repository is hosted at GitHub: https://github.com/qpdf/qpdf.
 
 ## Status
-This project is in its infancy. While early versions may be published, the library should **not** be considered stable until version 1.0.0 is released.
+This project is currently considered stable and ready for use: it supports basic manipulation of PDF files via one portion of the underlying QPdf library, including:
+- Reading files from disk/memory with or without passwords
+- Reading/writing PDF from/to JSON, and updating PDF from JSON
+- Manipulating PDF pages (add/remove) and splicing/merging PDFs
+- Various document optimizations (compression, linearization, removing unused objects)
+
+Over the next while v2 will be in development, supporting the QPdf jobs API and [many more PDF operations](https://qpdf.readthedocs.io/en/stable/qpdf-job.html). Stay tuned!
 
 ## Roadmap
 
-- **v1**: Fully implement QPdf object handling.
+- **v1**: ~~Fully implement QPdf object handling~~.
+- **v1.x**: Documentation, optimizations, and any non-breaking expansions to the API that help facilitate usage of QPdf.
 - **v2**: Implement QPdf job handling.
-- **>v2**: Maintenance, compatibility, optimizations. This library should sufficiently wrap QPdf.
+- **v2.x**: Maintenance, compatibility, optimizations. This library should sufficiently wrap QPdf.
 
 ## Installation
 QPdfSharp is available [as a NuGet package](https://www.nuget.org/packages/QPdfSharp/). Installing QPdfSharp will include the necessary libraries for your platform.
@@ -24,15 +30,49 @@ Via CLI:
 `dotnet add package QPdfSharp`
 
 ## Usage
-QPdfSharp aims to facilitate usage of the underlying QPDF library by providing a simple, easy-to-use API that is familiar to .NET developers.
+QPdfSharp aims to facilitate usage of the underlying QPdf library by providing a simple, easy-to-use API that is familiar to .NET developers. You can find plenty of usage examples [in the tests folder](https://github.com/svengeance/QPdfSharp/tree/main/tests/QPdfSharp.Tests).
 
-< Usage Examples Pending >
+### Important Usage Notes
+The QPdf object is your central point of interaction for using this library, and has a few important notes:
+- It is **not** thread-safe. You should not share a QPdf object across threads.
+- It is Disposable, and should be disposed of when you are done with it.
+- The underlying library [does not make guarantees about multiple write operations](https://github.com/qpdf/qpdf/issues/512); QPdfSharp follows suit by allowing only one write operation per QPdf object.
+
+### Examples
+
+#### Read - Optimize - Write
+```cs
+// Read PDF
+using var qpdf = new QPdf(TestAssets.Grug);
+
+// Write with optimizations
+qpdf.WriteFile("optimized.pdf", new QPdfWriteOptions
+{
+    CompressStreams = true,
+    Linearize = true
+});
+```
+
+#### Read - Prepend Watermark Page - Write to Network
+```cs
+// This watermark could be safely cached in memory with a long-held reference to QPdf.
+using var watermark = new QPdf(TestAssets.QPdfWatermark);
+using var qpdf = new QPdf(TestAssets.Grug);
+
+// Prepend watermark page
+qpdf.PrependPage(watermark.GetPage(0));
+
+// Write PDF to a stream and upload it
+using var qpdfStream = qpdf.WriteStream();
+var client = new HttpClient();
+await client.PostAsync("https://example.com", new StreamContent(qpdfStream));
+```
 
 ## Runtime Libraries
-QPdfSharp depends on the [QPdf.RuntimeLibraries](https://www.nuget.org/packages/QPdf.RuntimeLibraries) to distribute the appropriate QPDF binaries for your platform.
+QPdfSharp depends on the [QPdf.RuntimeLibraries](https://www.nuget.org/packages/QPdf.RuntimeLibraries) to distribute the appropriate QPdf binaries for your platform.
 Those interested in using these binaries without this library are free to do so.
 
-The runtime libraries are checked daily for updates to qpdf; at this time QPdfSharp will manually update to the latest NuGet distribution of the libraries.
+The runtime libraries are checked daily for updates to QPdf; at this time QPdfSharp will manually update to the latest NuGet distribution of the libraries.
 
 # Building and Testing
 
@@ -51,7 +91,7 @@ If this is not the case, please open an issue and do not be afraid to roast me.
 
 2: Run `scripts/generate-interop.sh`. This will use CLangSharpPInvokeGenerator to generate the C# interop files.
 
-3: Run `scripts/build-runtime-libraries-nuget.sh`. This will output a NuGet package with the latest QPDF binaries under `artifacts/QPdf.RuntimeLibraries.<version>.nupkg`.
+3: Run `scripts/build-runtime-libraries-nuget.sh`. This will output a NuGet package with the latest QPdf binaries under `artifacts/QPdf.RuntimeLibraries.<version>.nupkg`.
 
 4: Launch the repository in your IDE of choice, and verify tests pass.
 
