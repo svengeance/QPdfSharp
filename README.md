@@ -71,6 +71,11 @@ await client.PostAsync("https://example.com", new StreamContent(qpdfStream));
 ### Exception Handling
 Every call to the underlying library includes a check to see if an error was returned. Errors forwarded from QPdf are thrown as `QPdfExceptions`, while managed code will throw typical BCL exceptions as needed.
 
+### Async?
+You may notice QPdfsharp does not utilize async operations (e.g. reading a file from disk in the QPdf constructor).
+The QPdf library does as little as it needs to when manipulating PDFs, and may not need the entire contents of the passed-in PDF.
+Passing in whole binary buffers to the library also necessitates a copy, which is not ideal for memory.
+
 ## Runtime Libraries
 QPdfSharp depends on the [QPdf.RuntimeLibraries](https://www.nuget.org/packages/QPdf.RuntimeLibraries) to distribute the appropriate QPdf binaries for your platform.
 Those interested in using these binaries without this library are free to do so.
