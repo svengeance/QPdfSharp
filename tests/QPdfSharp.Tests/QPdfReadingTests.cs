@@ -2,7 +2,7 @@ using QPdfSharp.Options;
 
 namespace QPdfSharp.Tests;
 
-public class QPdfTests
+public class QPdfReadingTests
 {
     [Fact]
     public void Can_read_qpdf_version()
