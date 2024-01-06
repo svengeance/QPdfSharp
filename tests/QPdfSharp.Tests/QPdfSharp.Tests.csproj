@@ -19,8 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\grug.pdf" CopyToOutputDirectory="Always" />
-    <None Update="Assets\grug.json" CopyToOutputDirectory="Always" />
+    <None Update="Assets\*.*" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>
