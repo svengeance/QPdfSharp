@@ -134,7 +134,6 @@ public class QPdfWritingTests
 
         // Assert
         writeAgain.Should().Throw<InvalidOperationException>();
-        File.Delete(outputFileName);
     }
 
     [Fact]
