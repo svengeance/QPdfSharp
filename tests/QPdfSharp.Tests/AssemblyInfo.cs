@@ -2,4 +2,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+[assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly, DisableTestParallelization = true)]
 [assembly: SuppressMessage("Usage", "IDE1006:Naming Styles", Justification = "I'll call my tests what I damn well please.")]
