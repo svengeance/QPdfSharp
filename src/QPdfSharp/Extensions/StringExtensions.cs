@@ -7,13 +7,13 @@ namespace QPdfSharp.Extensions;
 
 internal static class StringExtensions
 {
-    public static ReadOnlySpan<sbyte> ToSByte(this string? str)
+    public static sbyte[] ToSByte(this string? str)
     {
         if (str is null)
             return [];
 
         var bytes = Encoding.UTF8.GetBytes(str);
 
-        return Unsafe.As<sbyte[]>(bytes);
+        return (sbyte[])(object)bytes;
     }
 }

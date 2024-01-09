@@ -1,6 +1,5 @@
 ﻿// Copyright © Stephen (Sven) Vernyi and Contributors. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using QPdfSharp.Extensions;
@@ -89,14 +88,32 @@ public unsafe partial class QPdf
         MarkDataWritten();
         ApplyWriteOptions(writeOptions);
 
-        var wantedObjectsBytes = (wantedObjects ?? [""]).Select(s => Unsafe.As<sbyte[]>(Encoding.UTF8.GetBytes(s))).ToArray();
-        var wantedObjectsPins = wantedObjectsBytes.Select(s => GCHandle.Alloc(s, GCHandleType.Pinned)).ToArray();
-        var wantedObjectsPtrs = Unsafe.As<sbyte*[]>(wantedObjectsPins.Select(s => s.AddrOfPinnedObject()).ToArray());
-
-        fixed (sbyte** wantedObjectsRootPtr = &wantedObjectsPtrs[0])
-        fixed (sbyte* filePrefix = "in-memory".ToSByte())
+        sbyte*[] wantedObjectsPtrs;
+        if (wantedObjects is { Length: > 0 })
         {
-            try
+            wantedObjectsPtrs = new sbyte*[wantedObjects.Length];
+            for (var i = 0; i < wantedObjects.Length; i++)
+            {
+                var stringToCopy = wantedObjects[i];
+                var byteCount = checked(Encoding.UTF8.GetByteCount(stringToCopy) + 1);
+                var utf8String = (sbyte*)Marshal.AllocHGlobal(byteCount);
+                utf8String[byteCount - 1] = 0;
+                fixed (char* stringPtr = stringToCopy)
+                {
+                    Encoding.UTF8.GetBytes(stringPtr, stringToCopy.Length, (byte*)utf8String, byteCount - 1);
+                }
+                wantedObjectsPtrs[i] = utf8String;
+            }
+        }
+        else
+        {
+            wantedObjectsPtrs = [null];
+        }
+
+        try
+        {
+            fixed (sbyte** wantedObjectsRootPtr = wantedObjectsPtrs)
+            fixed (byte* filePrefix = "in-memory"u8)
             {
                 CheckError(
                     QPdfInterop.qpdf_write_json(
@@ -106,16 +123,16 @@ public unsafe partial class QPdf
                         udata: null,
                         decode_level: QPdfStreamDecodeLevel.qpdf_dl_all,
                         json_stream_data: QPdfJsonStreamData.qpdf_sj_inline,
-                        file_prefix: filePrefix,
+                        file_prefix: (sbyte*)filePrefix,
                         wanted_objects: wantedObjectsRootPtr
                     )
                 );
             }
-            finally
-            {
-                foreach (var pin in wantedObjectsPins)
-                    pin.Free();
-            }
+        }
+        finally
+        {
+            foreach (var ptr in wantedObjectsPtrs)
+                Marshal.FreeHGlobal((nint)ptr);
         }
     }
 
