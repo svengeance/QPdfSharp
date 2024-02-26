@@ -1,6 +1,2 @@
-### Adjustments
-- Minor code simplifications
-
-### Fixes
-- Properly orders initialization of writing before setting QPdf write properties
-- Flaky test
+### Updates
+Updates QPdf NuGet packages to the latest (v11.9.0)
