@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="QPdfSharp.Interop" Version="1.0.1" />
     <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
 </Project>
